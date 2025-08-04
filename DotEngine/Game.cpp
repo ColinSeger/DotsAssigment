@@ -7,81 +7,59 @@ Game::Game(DotRenderer* aRenderer)
 
 	for (size_t i = 0; i < DOT_AMOUNT; i++)
 	{
-		Dot* d = new Dot({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT }, 3);
+		Dot dot = Dot({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT }, 3);
 
-		dots.push_back(d);
+		dots.push_back(dot);
 	}
 
 	//To debug collision
-	dots[0]->overriden = true;
-	dots[0]->radius = 10;
+	// dots[0].overriden = true;
+	dots[0].radius = 10;
 	//To debug collision
 }
 
 void Game::Update(float aDeltaTime)
 {
-	std::vector<Dot*> toDestroy;
-	for (Dot* dotOne : dots)
+	for (Dot& dotOne : dots)
 	{
-		for (Dot* dotTwo : dots)
+		for (Dot& dotTwo : dots)
 		{
-			if (dotOne != dotTwo && dotOne != nullptr && dotTwo != nullptr)
+			if (&dotOne == &dotTwo) continue;
+			
+			float dist = glm::distance(dotOne.GetPosition(), dotTwo.GetPosition());
+			float minDist = dotOne.radius + dotTwo.radius;
+
+			if (dist < minDist)
 			{
-				float dist = glm::distance(dotOne->position, dotTwo->position);
-				float minDist = dotOne->radius + dotTwo->radius;
+				glm::vec2 normal = glm::normalize(dotTwo.GetPosition() - dotOne.GetPosition());
 
-				if (dist < minDist)
-				{
-					glm::vec2 normal = glm::normalize(dotTwo->position - dotOne->position);
+				dotOne.velocity = glm::reflect(dotOne.velocity, normal);
+				dotTwo.velocity = glm::reflect(dotTwo.velocity, -normal);
 
-					dotOne->velocity = glm::reflect(dotOne->velocity, normal);
-					dotTwo->velocity = glm::reflect(dotTwo->velocity, -normal);
-
-					float overlap1 = 1.5f * ((minDist + 1) - dist);
-					float overlap2 = 1.5f * (minDist - dist);
-					dotOne->position -= normal * overlap1;
-					dotTwo->position += normal * overlap2;
-					dotOne->TakeDamage(1);
-					dotOne->radius++;
-				}
-				if (dotOne->health <= 0)
-				{
-					toDestroy.push_back(dotOne);
-				}
+				float overlap1 = 1.5f * ((minDist + 1) - dist);
+				float overlap2 = 1.5f * (minDist - dist);
+				dotOne.SetPosition((dotOne.GetPosition() - normal * overlap1));
+				dotTwo.SetPosition((dotTwo.GetPosition() - normal * overlap2));
+				dotOne.TakeDamage(1);
+				dotOne.radius++;
 			}
 		}
 	}
 
-	std::vector<int> indexesToRemove;
-
-	for (Dot* d : toDestroy)
+	for (Dot& dot : dots)
 	{
-		for (size_t i = 0; i < dots.size(); i++)
-		{
-			if (std::find(indexesToRemove.begin(), indexesToRemove.end(), i) != indexesToRemove.end())
-			{
-				continue;
-			}
-			else if (dots[i] == d)
-			{
-				indexesToRemove.push_back(i);
-			}
-		}
+		if(dot.health > 0) continue;
+		Dot newDot = Dot({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT }, 3);
+		dot = newDot;
 	}
 
-	for (int i : indexesToRemove)
-	{
-		delete dots[i];
-		dots[i] = new Dot({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT }, 3);
-	}
 	Render(aDeltaTime);
 }
 
 void Game::Render(float deltaTime){
-	for (Dot* d : dots)
+	for (Dot& dot : dots)
 	{
-		if (!d) continue;
-		d->Render(renderer, deltaTime);
+		dot.Render(renderer, deltaTime);
 	}
 }
 

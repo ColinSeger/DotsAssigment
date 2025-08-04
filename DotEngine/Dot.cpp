@@ -18,30 +18,7 @@ Dot::Dot(glm::vec2 aPosition, float aRadius)
 	health = 3;
 }
 
-void Dot::Render(DotRenderer* aRenderer, float dt)
-{
-	totalTime += dt;
-
-	position += velocity * DOT_VELOCITY * dt;
-
-	if (!overriden)
-	{
-
-		float redColor = (glm::cos((totalTime + startPos.x) * 0.1f) * 0.5f + 0.5f) * 255.0f;
-
-		float greenColor = (glm::cos((totalTime + startPos.y) * 0.9f) * 0.5f + 0.5f) * 255.0f;
-
-		float blueColor = (glm::cos(totalTime * 0.4f) * 0.5f + 0.5f) * 255.0f;
-
-		aRenderer->SetDrawColor(redColor, greenColor, blueColor, 255);
-	}
-	else 
-	{
-		aRenderer->SetDrawColor(255, 255, 255, 255);
-	}
-
-	aRenderer->DrawFilledCircle(position.x, position.y, radius);
-
+void Dot::Update(float deltaTime){
 	if (position.x - radius < 0.0f)
 	{
 		position.x = radius;
@@ -63,6 +40,23 @@ void Dot::Render(DotRenderer* aRenderer, float dt)
 		position.y = SCREEN_HEIGHT - radius;
 		velocity.y *= -1;
 	}
+}
+
+void Dot::Render(DotRenderer* aRenderer, float deltaTime)
+{
+	totalTime += deltaTime;
+
+	position += velocity * DOT_VELOCITY * deltaTime;
+
+	float redColor = (glm::cos((totalTime + startPos.x) * 0.1f) * 0.5f + 0.5f) * 255.0f;
+
+	float greenColor = (glm::cos((totalTime + startPos.y) * 0.9f) * 0.5f + 0.5f) * 255.0f;
+
+	float blueColor = (glm::cos(totalTime * 0.4f) * 0.5f + 0.5f) * 255.0f;
+
+	aRenderer->SetDrawColor(redColor, greenColor, blueColor, 255);
+
+	aRenderer->DrawFilledCircle(position.x, position.y, radius);
 }
 
 void Dot::TakeDamage(int someDamage)

@@ -152,12 +152,14 @@
     <ClCompile Include="Dot.cpp" />
     <ClCompile Include="DotRenderer.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dot.h" />
     <ClInclude Include="DotRenderer.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

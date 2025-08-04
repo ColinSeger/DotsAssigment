@@ -1,0 +1,22 @@
+#pragma once
+#include "glm/glm.hpp"
+#include "DotRenderer.h"
+
+class GameObject
+{
+    public:
+    virtual void Update(float deltaTime);
+
+    virtual void Render(DotRenderer* render, float deltaTime);
+
+    const void SetPosition(glm::vec2 newPosition){
+        this->position = newPosition;
+    }
+    const glm::vec2 GetPosition(){
+        return position;
+    }
+
+    protected:
+    glm::vec2 position;
+};
+

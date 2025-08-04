@@ -1,19 +1,19 @@
 #pragma once
 #include "glm/glm.hpp"
-#include "DotRenderer.h"
+#include "GameObject.h"
 #include <random>
 #include <glm/gtc/constants.hpp>
 #include <time.h>
 
-class Dot
+class Dot : public GameObject
 {
 public:
 
 	Dot(glm::vec2 aPosition, float aRadius);
-	void Render(DotRenderer* aRenderer, float dt);
+	void Update(float deltaTime) override;
+	void Render(DotRenderer* render, float deltaTime) override;
 	void TakeDamage(int someDamage);
 
-	glm::vec2 position;
 	glm::vec2 startPos;
 	glm::vec2 velocity;
 
@@ -22,21 +22,13 @@ public:
 
 	int health;
 
-	bool overriden = false;
-
-	bool operator==(Dot const* f)
-	{
-		if(this == f){
-			return true;
-		}
-		return false;
-	}
-	bool operator!=(Dot const* f)
-	{
-		if(this != f){
-			return false;
-		}
-		return true;
+	Dot operator=(const Dot& other){
+		this->position = other.position;
+		this->startPos = other.startPos;
+		this->totalTime = other.totalTime;
+		this->radius = other.radius;
+		this->health = other.health;
+		return *this;
 	}
 private:
 

@@ -1,9 +1,10 @@
 #pragma once
-#include "vector"
+#include <vector>
+#include "glm/glm.hpp"
 #include "DotRenderer.h"
+#include "GameObject.h"
 #include "Dot.h"
 #include <cstdlib>
-#include "glm/glm.hpp"
 #include <algorithm>
 
 static const int SCREEN_WIDTH = 1000;
@@ -18,10 +19,14 @@ public:
 	void Render(float deltaTime);
 
 	void CleanUp();
+
+	float GetTime(){return currentTime;}
 private:
-	const int DOT_AMOUNT = 100;	
+	const int DOT_AMOUNT = 2000;	
 
 	DotRenderer* renderer;
-	std::vector<Dot*> dots;
+	std::vector<Dot> dots;
+
+	float currentTime = 0;
 };
 

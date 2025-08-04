@@ -7,6 +7,9 @@
 
 int main(int argc, char* args[])
 {
+#ifdef _DEBUG
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		return 1;
