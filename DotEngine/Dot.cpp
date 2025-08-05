@@ -1,10 +1,10 @@
 #include "Dot.h"
 static const int SCREEN_WIDTH = 1000;
 static const int SCREEN_HEIGHT = 800;
-Dot::Dot(glm::vec2 aPosition, float aRadius)
+Dot::Dot(glm::vec2 position, float aRadius)
 {
-	position = aPosition;
-	startPos = aPosition;
+	position = position;
+	startPos = position;
 	radius = aRadius;
 
 	static std::mt19937 rng(static_cast<unsigned int>(time(nullptr)));

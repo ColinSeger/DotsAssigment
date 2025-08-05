@@ -18,7 +18,7 @@ Game::Game(DotRenderer* aRenderer)
 	//To debug collision
 }
 
-void Game::Update(float aDeltaTime)
+void Game::Update(float deltaTime)
 {
 	for (Dot& dotOne : dots)
 	{
@@ -48,12 +48,13 @@ void Game::Update(float aDeltaTime)
 
 	for (Dot& dot : dots)
 	{
+		dot.Update(deltaTime);
 		if(dot.health > 0) continue;
 		Dot newDot = Dot({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT }, 3);
 		dot = newDot;
 	}
 
-	Render(aDeltaTime);
+	Render(deltaTime);
 }
 
 void Game::Render(float deltaTime){

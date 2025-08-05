@@ -9,7 +9,7 @@ class Dot : public GameObject
 {
 public:
 
-	Dot(glm::vec2 aPosition, float aRadius);
+	Dot(glm::vec2 position, float radius);
 	void Update(float deltaTime) override;
 	void Render(DotRenderer* render, float deltaTime) override;
 	void TakeDamage(int someDamage);
