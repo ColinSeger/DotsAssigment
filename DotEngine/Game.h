@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "glm/glm.hpp"
+// #include "QuadTree.h"
 #include "DotRenderer.h"
 #include "GameObject.h"
 #include "Dot.h"
@@ -22,7 +23,7 @@ public:
 
 	float GetTime(){return currentTime;}
 private:
-	const int DOT_AMOUNT = 2000;	
+	const int DOT_AMOUNT = 500;	
 
 	DotRenderer* renderer;
 	std::vector<Dot> dots;

@@ -20,6 +20,7 @@ Game::Game(DotRenderer* aRenderer)
 
 void Game::Update(float deltaTime)
 {
+	// QuadTree* quad = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_HEIGHT, (float)SCREEN_WIDTH}));
 	for (Dot& dotOne : dots)
 	{
 		for (Dot& dotTwo : dots)
@@ -31,7 +32,8 @@ void Game::Update(float deltaTime)
 
 			if (dist < minDist)
 			{
-				glm::vec2 normal = glm::normalize(dotTwo.GetPosition() - dotOne.GetPosition());
+				auto test = dotTwo.GetPosition();
+				glm::vec2 normal = glm::normalize(test - dotOne.GetPosition());
 
 				dotOne.velocity = glm::reflect(dotOne.velocity, normal);
 				dotTwo.velocity = glm::reflect(dotTwo.velocity, -normal);
@@ -44,6 +46,8 @@ void Game::Update(float deltaTime)
 				dotOne.radius++;
 			}
 		}
+		// Node node = Node(dotOne.GetPosition());
+		// quad->Insert(&node);
 	}
 
 	for (Dot& dot : dots)
@@ -55,6 +59,7 @@ void Game::Update(float deltaTime)
 	}
 
 	Render(deltaTime);
+	// quad->CleanUp();
 }
 
 void Game::Render(float deltaTime){

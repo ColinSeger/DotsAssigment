@@ -12,8 +12,8 @@ class GameObject
     const void SetPosition(glm::vec2 newPosition){
         this->position = newPosition;
     }
-    const glm::vec2 GetPosition(){
-        return position;
+    glm::vec2& GetPosition(){
+        return this->position;
     }
 
     protected:

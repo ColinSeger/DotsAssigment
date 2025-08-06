@@ -3,7 +3,7 @@ static const int SCREEN_WIDTH = 1000;
 static const int SCREEN_HEIGHT = 800;
 Dot::Dot(glm::vec2 position, float aRadius)
 {
-	position = position;
+	this->SetPosition(position);
 	startPos = position;
 	radius = aRadius;
 
