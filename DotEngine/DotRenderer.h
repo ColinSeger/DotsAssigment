@@ -1,5 +1,8 @@
 #pragma once
+#include "glm/glm.hpp"
 #include <SDL3/SDL.h>
+#include <cmath>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -19,6 +22,11 @@ public:
     void DrawCircle(int centerX, int centerY, int radius);
     void DrawFilledCircle(int centerX, int centerY, int radius);
     void RenderTexture(SDL_Texture* texture, const SDL_FRect* srcRect, const SDL_FRect* dstRect);
+
+    void DrawLineBetweenPoints(glm::vec2 point1, glm::vec2 point2){
+        SetDrawColor(0,255,0,255);
+		SDL_RenderLine(m_sdlRenderer, point1.x, point1.y, point2.x, point2.y);
+	}
 
 private:
     SDL_Renderer* m_sdlRenderer;

@@ -15,8 +15,8 @@ QuadTree::QuadTree(BoundingBox boundingBox)
 void QuadTree::Insert(Node* newNode)
 {
     if(!newNode || !treeBoundingBox.InBounds(newNode->position.x, newNode->position.y)) return;
-    if( glm::abs(treeBoundingBox.upperLeft.x - treeBoundingBox.bottomRight.x) <= 1 && 
-        glm::abs(treeBoundingBox.upperLeft.y - treeBoundingBox.bottomRight.y) <= 1)
+    if( glm::abs(treeBoundingBox.upperLeft.x - treeBoundingBox.bottomRight.x) <= MIN_BOX_SIZE && 
+        glm::abs(treeBoundingBox.upperLeft.y - treeBoundingBox.bottomRight.y) <= MIN_BOX_SIZE)
     {
         if(nodes.size() <= CAPACITY){
             nodes.push_back(newNode);
@@ -69,6 +69,47 @@ void QuadTree::Insert(Node* newNode)
         southEast = new QuadTree(newBox);
     }
     southEast->Insert(newNode);
+}
+
+std::vector<Node*>& QuadTree::Search(glm::vec2 position)
+{
+    std::vector<Node*> empty;
+    if(!treeBoundingBox.InBounds(position)){
+        return empty;
+    }
+    if(nodes.size() > 0){
+        return nodes;
+    }
+
+    if((treeBoundingBox.upperLeft.x + treeBoundingBox.bottomRight.x) / 2 >= position.x){
+        if((treeBoundingBox.upperLeft.y + treeBoundingBox.bottomRight.y) / 2 >= position.y){
+            if(!northWest) return empty;
+            return northWest->Search(position);
+        }
+        if(!southWest) return empty;
+        return southWest->Search(position);
+    }
+    if((treeBoundingBox.upperLeft.y + treeBoundingBox.bottomRight.y) / 2 >= position.y){
+        if(!northEast) return empty;
+        return northEast->Search(position);
+    }
+    if(!southEast) return empty;
+    return southEast->Search(position);
+}
+
+std::vector<Node*>& QuadTree::GetNeighbors(glm::vec2 position, BoundingBox range){
+    std::vector<Node*> result;
+    auto res1 = Search(range.upperLeft);
+    auto res2 = Search(range.bottomRight);
+    for (int i = 0; i < res1.size(); i++)
+    {
+        result.push_back(res1[i]);
+    }
+    for (int i = 0; i < res2.size(); i++)
+    {
+        result.push_back(res2[i]);
+    }
+    return result;
 }
 
 void QuadTree::CleanUp()

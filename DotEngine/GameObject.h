@@ -15,8 +15,9 @@ class GameObject
     glm::vec2& GetPosition(){
         return this->position;
     }
-
+    std::vector<glm::vec2> neighbors;
     protected:
     glm::vec2 position;
+    
 };
 

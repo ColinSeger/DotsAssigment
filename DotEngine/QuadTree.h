@@ -36,6 +36,10 @@ public:
         if(xPos < upperLeft.x || yPos > bottomRight.y) return false;
         return true;
     }
+    bool InBounds(glm::vec2 position){
+        return (position.x >= upperLeft.x && position.x <= bottomRight.x
+            && position.y >= upperLeft.y && position.y <= bottomRight.y);
+    }
 
     BoundingBox operator/(int divideBy){
         float upperX = (upperLeft.x / divideBy);
@@ -53,6 +57,7 @@ public:
 class QuadTree
 {
     const static int CAPACITY = 4;
+    const static int MIN_BOX_SIZE = 10;
 
     BoundingBox treeBoundingBox;
 
@@ -71,8 +76,37 @@ public:
 
     void SubDivide();
 
-    // void QueryRange();
+    std::vector<Node*>& GetNeighbors(glm::vec2 position, BoundingBox range);
+
+    std::vector<Node*>& Search(glm::vec2 position);
 
     void CleanUp();
+
+    void DebugDraw(DotRenderer* render){
+        glm::vec2 topRight = {treeBoundingBox.upperLeft.x, treeBoundingBox.bottomRight.y};
+        glm::vec2 bottomLeft = {treeBoundingBox.bottomRight.x, treeBoundingBox.upperLeft.y};
+
+        render->DrawLineBetweenPoints(treeBoundingBox.upperLeft, topRight);
+        render->DrawLineBetweenPoints(treeBoundingBox.upperLeft, bottomLeft);
+        render->DrawLineBetweenPoints(treeBoundingBox.bottomRight, topRight);
+        render->DrawLineBetweenPoints(treeBoundingBox.bottomRight, bottomLeft);
+
+        if(northWest){
+            northWest->DebugDraw(render);
+        }
+        if(northEast){
+            northEast->DebugDraw(render);
+        }
+        if(southWest){
+            southWest->DebugDraw(render);
+        }
+        if(southEast){
+            southEast->DebugDraw(render);
+        }
+    }
+
+    BoundingBox GetBounds(){
+        return treeBoundingBox;
+    }
 };
 

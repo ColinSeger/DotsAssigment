@@ -23,11 +23,12 @@ public:
 
 	float GetTime(){return currentTime;}
 private:
-	const int DOT_AMOUNT = 500;	
+	const int DOT_AMOUNT = 50;	
 
 	DotRenderer* renderer;
 	std::vector<Dot> dots;
 
 	float currentTime = 0;
+
 };
 
