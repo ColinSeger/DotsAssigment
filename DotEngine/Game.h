@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include "glm/glm.hpp"
-// #include "QuadTree.h"
+#include "QuadTree.h"
 #include "DotRenderer.h"
 #include "GameObject.h"
 #include "Dot.h"

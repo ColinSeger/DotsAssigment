@@ -18,7 +18,7 @@ void QuadTree::Insert(Node* newNode)
     if( glm::abs(treeBoundingBox.upperLeft.x - treeBoundingBox.bottomRight.x) <= 1 && 
         glm::abs(treeBoundingBox.upperLeft.y - treeBoundingBox.bottomRight.y) <= 1)
     {
-        if(nodes.size() >= CAPACITY){
+        if(nodes.size() <= CAPACITY){
             nodes.push_back(newNode);
             return;
         }
@@ -58,6 +58,7 @@ void QuadTree::Insert(Node* newNode)
             northEast = new QuadTree(newBox);
         }
         northEast->Insert(newNode);
+        return;
     }
     if(!southEast){
         glm::vec2 topLeft = treeBoundingBox.upperLeft;
@@ -72,6 +73,9 @@ void QuadTree::Insert(Node* newNode)
 
 void QuadTree::CleanUp()
 {
+    // for(int i = 0; i < nodes.size(); i++){
+    //     // delete nodes[i];
+    // }
     if(northWest){
         northWest->CleanUp();
     }

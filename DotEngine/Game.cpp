@@ -20,7 +20,7 @@ Game::Game(DotRenderer* aRenderer)
 
 void Game::Update(float deltaTime)
 {
-	// QuadTree* quad = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_HEIGHT, (float)SCREEN_WIDTH}));
+	QuadTree* quad = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_HEIGHT, (float)SCREEN_WIDTH}));
 	for (Dot& dotOne : dots)
 	{
 		for (Dot& dotTwo : dots)
@@ -46,9 +46,13 @@ void Game::Update(float deltaTime)
 				dotOne.radius++;
 			}
 		}
-		// Node node = Node(dotOne.GetPosition());
-		// quad->Insert(&node);
+		
+		if(quad){
+			Node node = Node(dotOne.GetPosition());
+			quad->Insert(&node);
+		}
 	}
+	
 
 	for (Dot& dot : dots)
 	{
@@ -59,7 +63,7 @@ void Game::Update(float deltaTime)
 	}
 
 	Render(deltaTime);
-	// quad->CleanUp();
+	quad->CleanUp();
 }
 
 void Game::Render(float deltaTime){

@@ -7,7 +7,7 @@ struct Node
     glm::vec2 position;
     
     Node(){
-
+        position = {0,0};
     }
 
     Node(float x, float y){
