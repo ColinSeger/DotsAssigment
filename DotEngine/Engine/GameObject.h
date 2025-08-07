@@ -1,6 +1,6 @@
 #pragma once
 #include "glm/glm.hpp"
-#include "DotRenderer.h"
+#include "../Engine/DotRenderer.h"
 
 class GameObject
 {

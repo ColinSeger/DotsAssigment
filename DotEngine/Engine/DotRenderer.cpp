@@ -1,4 +1,4 @@
-#include "DotRenderer.h"
+#include "../Engine/DotRenderer.h"
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL.h>
 #include <cmath> 

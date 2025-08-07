@@ -1,6 +1,6 @@
 #pragma once
 #include "glm/glm.hpp"
-#include "GameObject.h"
+#include "../Engine/GameObject.h"
 #include <random>
 #include <glm/gtc/constants.hpp>
 #include <time.h>

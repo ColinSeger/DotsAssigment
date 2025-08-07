@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "../Game/Game.h"
 
 
 Game::Game(DotRenderer* aRenderer)
@@ -45,8 +45,10 @@ void Game::Update(float deltaTime)
 		// 		dotOne.radius++;
 		// 	}
 		// }
-		
-		Node node = Node(dotOne.GetPosition());
+		glm::vec2 pos = glm::vec2(dotOne.GetPosition());
+		Node node = Node(pos);
+		node.position.x = pos.x;
+		node.position.y = pos.y;
 		quad->Insert(&node);
 		
 	}
@@ -60,11 +62,11 @@ void Game::Update(float deltaTime)
 	{
 		glm::vec2 dotPosition = dot.GetPosition();
 		glm::vec2 upperLeft = dotPosition - dot.radius;
-		auto neighbor = quad->GetNeighbors(dotPosition, BoundingBox(upperLeft, dotPosition + dot.radius));
+		auto neighbor = quad->Search(dotPosition);
 		for(int i = 0; i < neighbor.size(); i++){
-			dot.neighbors.push_back(neighbor[i]->position);
-			glm::vec2 pos = neighbor[i]->position;
-			renderer->DrawLineBetweenPoints(dotPosition, pos);
+			glm::vec2 pos = neighbor[i].GetPosition();
+			dot.neighbors.push_back(pos);
+			// renderer->DrawLineBetweenPoints(dotPosition, pos);
 		}
 		dot.Update(deltaTime);
 		if(dot.health > 0) continue;
@@ -74,7 +76,7 @@ void Game::Update(float deltaTime)
 	}
 
 	Render(deltaTime);
-	quad->DebugDraw(renderer);
+	// quad->DebugDraw(renderer);
 	quad->CleanUp();
 }
 

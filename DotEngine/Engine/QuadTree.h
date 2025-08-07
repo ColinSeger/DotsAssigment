@@ -1,6 +1,7 @@
 #pragma once
-#include "Dot.h"
 #include "glm/glm.hpp"
+#include "../Engine/DotRenderer.h"
+#include <vector>
 
 struct Node
 {
@@ -15,6 +16,10 @@ struct Node
     }
     Node(glm::vec2 newPosition){
         position = newPosition;
+    }
+
+    glm::vec2 GetPosition(){
+        return position;
     }
 };
 
@@ -37,8 +42,11 @@ public:
         return true;
     }
     bool InBounds(glm::vec2 position){
-        return (position.x >= upperLeft.x && position.x <= bottomRight.x
-            && position.y >= upperLeft.y && position.y <= bottomRight.y);
+        if(position.x >= upperLeft.x && position.x <= bottomRight.x
+            && position.y >= upperLeft.y && position.y <= bottomRight.y){
+            return true;
+        }
+        return false;
     }
 
     BoundingBox operator/(int divideBy){
@@ -57,11 +65,11 @@ public:
 class QuadTree
 {
     const static int CAPACITY = 4;
-    const static int MIN_BOX_SIZE = 10;
+    const static int MIN_BOX_SIZE = 100;
 
     BoundingBox treeBoundingBox;
 
-    std::vector<Node*> nodes;
+    std::vector<Node> nodes;
 
     // Children
     QuadTree* northWest = nullptr;
@@ -76,9 +84,9 @@ public:
 
     void SubDivide();
 
-    std::vector<Node*>& GetNeighbors(glm::vec2 position, BoundingBox range);
+    // std::vector<Node*>& GetNeighbors(glm::vec2 position, BoundingBox range);
 
-    std::vector<Node*>& Search(glm::vec2 position);
+    std::vector<Node>& Search(glm::vec2 position);
 
     void CleanUp();
 

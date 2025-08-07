@@ -149,19 +149,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Dot.cpp" />
-    <ClCompile Include="DotRenderer.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Engine\DotRenderer.cpp" />
+    <ClCompile Include="Engine\GameObject.cpp" />
+    <ClCompile Include="Engine\QuadTree.cpp" />
+    <ClCompile Include="Game\Dot.cpp" />
+    <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="QuadTree.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Dot.h" />
-    <ClInclude Include="DotRenderer.h" />
-    <ClInclude Include="Game.h" />
-    <ClInclude Include="GameObject.h" />
-    <ClInclude Include="QuadTree.h" />
+    <ClInclude Include="Engine\DotRenderer.h" />
+    <ClInclude Include="Engine\GameObject.h" />
+    <ClInclude Include="Engine\QuadTree.h" />
+    <ClInclude Include="Game\Dot.h" />
+    <ClInclude Include="Game\Game.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

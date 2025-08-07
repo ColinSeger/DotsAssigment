@@ -1,8 +1,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <string>
-#include "Game.h"
-#include "DotRenderer.h"
+#include "Game/Game.h"
+#include "Engine/DotRenderer.h"
 
 
 int main(int argc, char* args[])

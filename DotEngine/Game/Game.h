@@ -1,12 +1,13 @@
 #pragma once
 #include <vector>
-#include "glm/glm.hpp"
-#include "QuadTree.h"
-#include "DotRenderer.h"
-#include "GameObject.h"
-#include "Dot.h"
 #include <cstdlib>
 #include <algorithm>
+#include "glm/glm.hpp"
+#include "../Engine/QuadTree.h"
+#include "../Engine/DotRenderer.h"
+#include "../Engine/GameObject.h"
+#include "../Game/Dot.h"
+
 
 static const int SCREEN_WIDTH = 1000;
 static const int SCREEN_HEIGHT = 800;
@@ -23,7 +24,7 @@ public:
 
 	float GetTime(){return currentTime;}
 private:
-	const int DOT_AMOUNT = 50;	
+	const int DOT_AMOUNT = 2000;	
 
 	DotRenderer* renderer;
 	std::vector<Dot> dots;
