@@ -72,51 +72,61 @@ void QuadTree::Insert(Node* newNode)
     southEast->Insert(newNode);
 }
 
-std::vector<Node>& QuadTree::Search(glm::vec2 position)
+std::vector<Node> QuadTree::Search(glm::vec2 position)
 {
-    std::vector<Node> empty;
-    if(!treeBoundingBox.InBounds(position)){
+    std::vector<Node> result;
+    float range = 5;
+    if(!InRange(position, range)){
+        std::vector<Node> empty;
         return empty;
     }
     if(nodes.size() > 0){
-        return nodes;
+        result.insert(result.end(), nodes.begin(), nodes.end());
     }
-    if((treeBoundingBox.upperLeft.x + treeBoundingBox.bottomRight.x) / 2 >= position.x){
-        if((treeBoundingBox.upperLeft.y + treeBoundingBox.bottomRight.y) / 2 >= position.y){
-            if(!northWest) return empty;
-            return northWest->Search(position);
-        }
-        if(!southWest) return empty;
-        return southWest->Search(position);
+    std::vector<QuadTree*> toSearch;
+    if(northWest && northWest->InRange(position, range)){
+        toSearch.push_back(northWest);
     }
-    if((treeBoundingBox.upperLeft.y + treeBoundingBox.bottomRight.y) / 2 >= position.y){
-        if(!northEast) return empty;
-        return northEast->Search(position);
+    if(southWest && southWest->InRange(position, range)){
+        toSearch.push_back(southWest);
     }
-    if(!southEast) return empty;
-    return southEast->Search(position);
+    if(northEast && northEast->InRange(position, range)){
+        toSearch.push_back(northEast);
+    }
+    if(southEast && southEast->InRange(position, range)){
+        toSearch.push_back(southEast);
+    }
+    for(QuadTree* tree : toSearch){
+        auto contains = tree->Search(position);
+        result.insert(result.end(), contains.begin(), contains.end());
+    }
+    return result;
 }
 
-// std::vector<Node*>& QuadTree::GetNeighbors(glm::vec2 position, BoundingBox range){
-//     std::vector<Node*> result;
-//     auto res1 = Search(range.upperLeft);
-//     auto res2 = Search(range.bottomRight);
-//     for (int i = 0; i < res1.size(); i++)
-//     {
-//         result.push_back(res1[i]);
-//     }
-//     for (int i = 0; i < res2.size(); i++)
-//     {
-//         result.push_back(res2[i]);
-//     }
-//     return result;
-// }
+bool QuadTree::InRange(glm::vec2 position, float range)
+{
+    // return treeBoundingBox.InBounds(position);
+    glm::vec2 topLeft = position - range;
+    if(treeBoundingBox.InBounds(topLeft)){
+        return true;
+    }
+    glm::vec2 topRight = {position.x + range, position.y - range};
+    if(treeBoundingBox.InBounds(topRight)){
+        return true;
+    }
+    glm::vec2 bottomLeft = {position.x - range, position.y + range};
+    if(treeBoundingBox.InBounds(bottomLeft)){
+        return true;
+    }
+    glm::vec2 bottomRight = position + range;
+    if(treeBoundingBox.InBounds(bottomRight)){
+        return true;
+    }
+    return false;
+}
 
 void QuadTree::CleanUp()
 {
-    // for(int i = 0; i < nodes.size(); i++){
-    //     // delete nodes[i];
-    // }
     if(northWest){
         northWest->CleanUp();
     }

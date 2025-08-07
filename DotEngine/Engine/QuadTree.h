@@ -65,7 +65,7 @@ public:
 class QuadTree
 {
     const static int CAPACITY = 4;
-    const static int MIN_BOX_SIZE = 100;
+    const static int MIN_BOX_SIZE = 20;
 
     BoundingBox treeBoundingBox;
 
@@ -86,7 +86,9 @@ public:
 
     // std::vector<Node*>& GetNeighbors(glm::vec2 position, BoundingBox range);
 
-    std::vector<Node>& Search(glm::vec2 position);
+    std::vector<Node> Search(glm::vec2 position);
+
+    bool InRange(glm::vec2 position, float range);
 
     void CleanUp();
 

@@ -14,7 +14,7 @@ Game::Game(DotRenderer* aRenderer)
 
 	//To debug collision
 	// dots[0].overriden = true;
-	dots[0].radius = 10;
+	// dots[0].radius = 10;
 	//To debug collision
 }
 
@@ -23,28 +23,6 @@ void Game::Update(float deltaTime)
 	QuadTree* quad = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
 	for (Dot& dotOne : dots)
 	{
-		// for (Dot& dotTwo : dots)
-		// {
-		// 	if (&dotOne == &dotTwo) continue;
-			
-		// 	float dist = glm::distance(dotOne.GetPosition(), dotTwo.GetPosition());
-		// 	float minDist = dotOne.radius + dotTwo.radius;
-
-		// 	if (dist < minDist)
-		// 	{
-		// 		glm::vec2 normal = glm::normalize(dotTwo.GetPosition() - dotOne.GetPosition());
-
-		// 		dotOne.velocity = glm::reflect(dotOne.velocity, normal);
-		// 		dotTwo.velocity = glm::reflect(dotTwo.velocity, -normal);
-
-		// 		float overlap1 = 1.5f * ((minDist + 1) - dist);
-		// 		float overlap2 = 1.5f * (minDist - dist);
-		// 		dotOne.SetPosition((dotOne.GetPosition() - normal * overlap1));
-		// 		dotTwo.SetPosition((dotTwo.GetPosition() - normal * overlap2));
-		// 		dotOne.TakeDamage(1);
-		// 		dotOne.radius++;
-		// 	}
-		// }
 		glm::vec2 pos = glm::vec2(dotOne.GetPosition());
 		Node node = Node(pos);
 		node.position.x = pos.x;
@@ -52,12 +30,6 @@ void Game::Update(float deltaTime)
 		quad->Insert(&node);
 		
 	}
-	// if(quad){
-	// 	Node node = Node(glm::vec2(10, 10));
-	// 	quad->Insert(&node);
-	// 	auto test = quad->Search(node.position);
-	// }
-
 	for (Dot& dot : dots)
 	{
 		glm::vec2 dotPosition = dot.GetPosition();

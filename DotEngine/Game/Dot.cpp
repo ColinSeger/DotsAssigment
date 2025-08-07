@@ -24,7 +24,7 @@ void Dot::Update(float deltaTime){
 		if(neighbor == position) continue;
 		float dist = glm::distance(GetPosition(), neighbor);
 		float minDist = radius + radius;
-		if (dist < minDist && dist > 0.001f)
+		if (dist < minDist)
 		{
 			glm::vec2 normal = glm::normalize(position - neighbor);
 
@@ -32,8 +32,8 @@ void Dot::Update(float deltaTime){
 			// dotTwo.velocity = glm::reflect(dotTwo.velocity, -normal);
 
 			float overlap1 = 1.5f * ((minDist + 1) - dist);
-			float overlap2 = 1.5f * (minDist - dist);
-			// SetPosition((GetPosition() - normal * overlap1));
+			// float overlap2 = 1.5f * (minDist - dist);
+			SetPosition((GetPosition() - normal * overlap1));
 			// dotTwo.SetPosition((.GetPosition() - normal * overlap2));
 			// TakeDamage(1);
 			// radius++;
