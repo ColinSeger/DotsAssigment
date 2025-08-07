@@ -1,15 +1,16 @@
 #pragma once
 #include "glm/glm.hpp"
-#include "../Engine/GameObject.h"
+
 #include <random>
 #include <glm/gtc/constants.hpp>
 #include <time.h>
-
+#include "../Engine/Components/PhysicsComponent.h"
+#include "../Engine/GameObject.h"
 class Dot : public GameObject
 {
 public:
 
-	Dot(glm::vec2 position, float radius);
+	Dot(float radius, PhysicsComponent* physics);
 	void Update(float deltaTime) override;
 	void Render(DotRenderer* render, float deltaTime) override;
 	void TakeDamage(int someDamage);
@@ -23,7 +24,7 @@ public:
 	int health;
 
 	Dot operator=(const Dot& other){
-		this->position = other.position;
+		physicsComponent->SetPosition(other.physicsComponent->GetPosition());
 		this->startPos = other.startPos;
 		this->totalTime = other.totalTime;
 		this->radius = other.radius;

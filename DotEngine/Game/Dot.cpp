@@ -1,10 +1,10 @@
 #include "../Game/Dot.h"
 static const int SCREEN_WIDTH = 1000;
 static const int SCREEN_HEIGHT = 800;
-Dot::Dot(glm::vec2 position, float aRadius)
+Dot::Dot(float aRadius, PhysicsComponent* physics)
 {
-	this->SetPosition(position);
-	startPos = position;
+	physicsComponent = physics;
+	startPos = physicsComponent->GetPosition();
 	radius = aRadius;
 
 	static std::mt19937 rng(static_cast<unsigned int>(time(nullptr)));
@@ -19,10 +19,10 @@ Dot::Dot(glm::vec2 position, float aRadius)
 }
 
 void Dot::Update(float deltaTime){
-	
+	glm::vec2 position = physicsComponent->GetPosition();
 	for(glm::vec2 neighbor : neighbors){
 		if(neighbor == position) continue;
-		float dist = glm::distance(GetPosition(), neighbor);
+		float dist = glm::distance(position, neighbor);
 		float minDist = radius + radius;
 		if (dist < minDist)
 		{
@@ -33,7 +33,7 @@ void Dot::Update(float deltaTime){
 
 			float overlap1 = 1.5f * ((minDist + 1) - dist);
 			// float overlap2 = 1.5f * (minDist - dist);
-			SetPosition((GetPosition() - normal * overlap1));
+			physicsComponent->SetPosition((position - normal * overlap1));
 			// dotTwo.SetPosition((.GetPosition() - normal * overlap2));
 			// TakeDamage(1);
 			// radius++;
@@ -64,6 +64,7 @@ void Dot::Update(float deltaTime){
 		position.y = SCREEN_HEIGHT - radius;
 		velocity.y *= -1;
 	}
+	physicsComponent->SetPosition(position);
 }
 
 void Dot::Render(DotRenderer* aRenderer, float deltaTime)
@@ -75,7 +76,7 @@ void Dot::Render(DotRenderer* aRenderer, float deltaTime)
 	float blueColor = (glm::cos(totalTime * 0.4f) * 0.5f + 0.5f) * 255.0f;
 
 	aRenderer->SetDrawColor(redColor, greenColor, blueColor, 255);
-
+	glm::vec2 position = physicsComponent->GetPosition();
 	aRenderer->DrawFilledCircle(position.x, position.y, radius);
 }
 

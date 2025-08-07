@@ -25,6 +25,9 @@
     <Filter Include="Header Files\Game">
       <UniqueIdentifier>{1e9e8026-d0e8-4953-9a18-16ac33a30c16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Engine\Components">
+      <UniqueIdentifier>{bbb27d90-cb37-4728-9900-3f7090085b02}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -45,6 +48,9 @@
     <ClCompile Include="Game\Dot.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Components\PhysicsComponent.cpp">
+      <Filter>Header Files\Engine\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\QuadTree.h">
@@ -61,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="Game\Dot.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Components\PhysicsComponent.h">
+      <Filter>Header Files\Engine\Components</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
