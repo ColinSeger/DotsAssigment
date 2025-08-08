@@ -9,17 +9,8 @@ class GameObject
     virtual void Update(float deltaTime);
 
     virtual void Render(DotRenderer* render, float deltaTime);
-
-    // const void SetPosition(glm::vec2 newPosition){
-    //     this->position = newPosition;
-    // }
-    // glm::vec2& GetPosition(){
-    //     return this->position;
-    // }
-    std::vector<glm::vec2> neighbors;
     PhysicsComponent* physicsComponent;
     protected:
-    // glm::vec2 position;
     
 };
 

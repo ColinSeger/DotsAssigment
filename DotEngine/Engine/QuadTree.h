@@ -1,6 +1,7 @@
 #pragma once
 #include "glm/glm.hpp"
 #include "../Engine/DotRenderer.h"
+#include "../Engine/Components/PhysicsComponent.h"
 #include <vector>
 #include <array>
 
@@ -49,6 +50,15 @@ public:
         return false;
     }
 
+    const glm::vec2 UpperLeft()
+    {
+        return upperLeft;
+    }
+    const glm::vec2 BottomRight()
+    {
+        return bottomRight;
+    }
+
     BoundingBox operator/(int divideBy){
         float upperX = (upperLeft.x / divideBy);
         float upperY = (upperLeft.y / divideBy);
@@ -69,31 +79,31 @@ class QuadTree
 
     BoundingBox treeBoundingBox;
 
-    std::vector<Node> nodes;
+    std::vector<PhysicsComponent*> nodes;
 
     std::array<QuadTree*, CAPACITY> directions = {nullptr, nullptr, nullptr, nullptr};
 public:
     QuadTree();
     QuadTree(BoundingBox boundingBox);
 
-    void Insert(Node* node);
+    void Insert(PhysicsComponent* newNode);
 
     inline void SubDivide();
 
-    std::vector<Node> Search(glm::vec2 position);
+    std::vector<PhysicsComponent*> Search(glm::vec2 position);
 
     bool InRange(glm::vec2 position, float range);
 
     void CleanUp();
 
     void DebugDraw(DotRenderer* render){
-        glm::vec2 topRight = {treeBoundingBox.upperLeft.x, treeBoundingBox.bottomRight.y};
-        glm::vec2 bottomLeft = {treeBoundingBox.bottomRight.x, treeBoundingBox.upperLeft.y};
+        glm::vec2 topRight = {treeBoundingBox.UpperLeft().x, treeBoundingBox.BottomRight().y};
+        glm::vec2 bottomLeft = {treeBoundingBox.BottomRight().x, treeBoundingBox.UpperLeft().y};
 
-        render->DrawLineBetweenPoints(treeBoundingBox.upperLeft, topRight);
-        render->DrawLineBetweenPoints(treeBoundingBox.upperLeft, bottomLeft);
-        render->DrawLineBetweenPoints(treeBoundingBox.bottomRight, topRight);
-        render->DrawLineBetweenPoints(treeBoundingBox.bottomRight, bottomLeft);
+        render->DrawLineBetweenPoints(treeBoundingBox.UpperLeft(), topRight);
+        render->DrawLineBetweenPoints(treeBoundingBox.UpperLeft(), bottomLeft);
+        render->DrawLineBetweenPoints(treeBoundingBox.BottomRight(), topRight);
+        render->DrawLineBetweenPoints(treeBoundingBox.BottomRight(), bottomLeft);
         for(QuadTree* tree : directions){
             if(!tree) continue;
             tree->DebugDraw(render);

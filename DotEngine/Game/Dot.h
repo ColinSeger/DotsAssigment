@@ -1,11 +1,8 @@
 #pragma once
 #include "glm/glm.hpp"
-
-#include <random>
-#include <glm/gtc/constants.hpp>
-#include <time.h>
 #include "../Engine/Components/PhysicsComponent.h"
 #include "../Engine/GameObject.h"
+
 class Dot : public GameObject
 {
 public:
