@@ -24,7 +24,7 @@ public:
 
 	float GetTime(){return currentTime;}
 private:
-	const int DOT_AMOUNT = 200;	
+	const int DOT_AMOUNT = 2000;	
 
 	DotRenderer* renderer;
 	std::vector<Dot> dots;

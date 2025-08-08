@@ -2,6 +2,7 @@
 #include "glm/glm.hpp"
 #include "../Engine/DotRenderer.h"
 #include <vector>
+#include <array>
 
 struct Node
 {
@@ -38,8 +39,7 @@ public:
     }
 
     bool InBounds(float xPos, float yPos){
-        if(xPos < upperLeft.x || yPos > bottomRight.y) return false;
-        return true;
+        return InBounds({xPos, yPos});
     }
     bool InBounds(glm::vec2 position){
         if(position.x >= upperLeft.x && position.x <= bottomRight.x
@@ -71,20 +71,14 @@ class QuadTree
 
     std::vector<Node> nodes;
 
-    // Children
-    QuadTree* northWest = nullptr;
-    QuadTree* northEast = nullptr;
-    QuadTree* southWest = nullptr;
-    QuadTree* southEast = nullptr;
+    std::array<QuadTree*, CAPACITY> directions = {nullptr, nullptr, nullptr, nullptr};
 public:
     QuadTree();
     QuadTree(BoundingBox boundingBox);
 
     void Insert(Node* node);
 
-    void SubDivide();
-
-    // std::vector<Node*>& GetNeighbors(glm::vec2 position, BoundingBox range);
+    inline void SubDivide();
 
     std::vector<Node> Search(glm::vec2 position);
 
@@ -100,18 +94,9 @@ public:
         render->DrawLineBetweenPoints(treeBoundingBox.upperLeft, bottomLeft);
         render->DrawLineBetweenPoints(treeBoundingBox.bottomRight, topRight);
         render->DrawLineBetweenPoints(treeBoundingBox.bottomRight, bottomLeft);
-
-        if(northWest){
-            northWest->DebugDraw(render);
-        }
-        if(northEast){
-            northEast->DebugDraw(render);
-        }
-        if(southWest){
-            southWest->DebugDraw(render);
-        }
-        if(southEast){
-            southEast->DebugDraw(render);
+        for(QuadTree* tree : directions){
+            if(!tree) continue;
+            tree->DebugDraw(render);
         }
     }
 

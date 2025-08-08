@@ -36,7 +36,7 @@ void Game::Update(float deltaTime)
 		for(int i = 0; i < neighbor.size(); i++){
 			glm::vec2 pos = neighbor[i].GetPosition();
 			dot.neighbors.push_back(pos);
-			renderer->DrawLineBetweenPoints(dotPosition, pos);
+			// renderer->DrawLineBetweenPoints(dotPosition, pos);
 		}
 		dot.Update(deltaTime);
 		if(dot.health > 0) continue;
