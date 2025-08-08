@@ -6,6 +6,7 @@ class PhysicsComponent
 {
 public:
     PhysicsComponent();
+    PhysicsComponent(glm::vec2 newPosition);
     ~PhysicsComponent();
 
     const void SetPosition(glm::vec2 newPosition){ this->position = newPosition; }

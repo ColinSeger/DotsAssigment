@@ -18,7 +18,9 @@ Dot::Dot(float aRadius, PhysicsComponent* physics)
 	health = 3;
 }
 
-void Dot::Update(float deltaTime){
+void Dot::Update(float deltaTime)
+{
+	if(!physicsComponent) return;
 	glm::vec2 position = physicsComponent->GetPosition();
 	for(glm::vec2 neighbor : neighbors){
 		if(neighbor == position) continue;
@@ -33,7 +35,7 @@ void Dot::Update(float deltaTime){
 
 			float overlap1 = 1.5f * ((minDist + 1) - dist);
 			// float overlap2 = 1.5f * (minDist - dist);
-			physicsComponent->SetPosition((position - normal * overlap1));
+			// physicsComponent->SetPosition((position - normal * overlap1));
 			// dotTwo.SetPosition((.GetPosition() - normal * overlap2));
 			// TakeDamage(1);
 			// radius++;

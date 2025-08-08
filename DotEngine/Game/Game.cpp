@@ -4,13 +4,13 @@
 Game::Game(DotRenderer* aRenderer)
 {
 	renderer = aRenderer;
-
+	physicsComponents.reserve(DOT_AMOUNT);
 	for (size_t i = 0; i < DOT_AMOUNT; i++)
 	{
-		PhysicsComponent physics = PhysicsComponent();
+		PhysicsComponent physics = PhysicsComponent({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
 		physicsComponents.push_back(physics);
-		physics.SetPosition({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
-		Dot dot = Dot(3, &physics);
+		// physics.SetPosition();
+		Dot dot = Dot(3, &physicsComponents[i]);
 
 		dots.push_back(dot);
 	}
@@ -24,11 +24,10 @@ Game::Game(DotRenderer* aRenderer)
 void Game::Update(float deltaTime)
 {
 	QuadTree* quad = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
-	for (Dot& dotOne : dots)
+	for (PhysicsComponent& component : physicsComponents)
 	{
-		Node node = Node(dotOne.physicsComponent->GetPosition());
+		Node node = Node(component.GetPosition());
 		quad->Insert(&node);
-		
 	}
 	for (Dot& dot : dots)
 	{
@@ -37,7 +36,7 @@ void Game::Update(float deltaTime)
 		for(int i = 0; i < neighbor.size(); i++){
 			glm::vec2 pos = neighbor[i].GetPosition();
 			dot.neighbors.push_back(pos);
-			// renderer->DrawLineBetweenPoints(dotPosition, pos);
+			renderer->DrawLineBetweenPoints(dotPosition, pos);
 		}
 		dot.Update(deltaTime);
 		if(dot.health > 0) continue;
@@ -48,7 +47,7 @@ void Game::Update(float deltaTime)
 	}
 
 	Render(deltaTime);
-	// quad->DebugDraw(renderer);
+	quad->DebugDraw(renderer);
 	quad->CleanUp();
 }
 
