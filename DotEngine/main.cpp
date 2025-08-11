@@ -1,8 +1,10 @@
+// #pragma once
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <string>
 #include "Game/Game.h"
 #include "Engine/DotRenderer.h"
+#include "Engine/Engine.h"
 
 
 int main(int argc, char* args[])
@@ -10,11 +12,11 @@ int main(int argc, char* args[])
 #ifdef _DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
+/*
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		return 1;
 	}
-
 	if (!TTF_Init())
 	{
 		SDL_Quit();
@@ -32,7 +34,13 @@ int main(int argc, char* args[])
 		SDL_Quit();
 		return 1;
 	}
+*/
+	
 
+	// renderer->SetDrawColor(0x00, 0x00, 0x00, 0xFF);
+	Engine gameEngine = Engine();
+	DotRenderer* renderer = gameEngine.GetRender();
+	Game* game = new Game(renderer);
 	TTF_Font* font = TTF_OpenFont("fonts/arial.ttf", 24);
 	if (font == nullptr)
 	{
@@ -41,11 +49,6 @@ int main(int argc, char* args[])
 		SDL_Quit();
 		return 1;
 	}
-
-	renderer->SetDrawColor(0x00, 0x00, 0x00, 0xFF);
-
-	Game* game = new Game(renderer);
-
 	bool quit = false;
 	SDL_Event event;
 
@@ -109,7 +112,7 @@ int main(int argc, char* args[])
 	delete game;
 	delete renderer;
 	TTF_CloseFont(font);
-	SDL_DestroyWindow(window);
+	
 	TTF_Quit();
 	SDL_Quit();
 

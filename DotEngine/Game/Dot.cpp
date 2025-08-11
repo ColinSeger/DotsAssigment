@@ -1,9 +1,9 @@
 #include "../Game/Dot.h"
-Dot::Dot(float aRadius, PhysicsComponent* physics)
+Dot::Dot(float newRadius, PhysicsComponent* physics)
 {
 	physicsComponent = physics;
 	startPos = physicsComponent->GetPosition();
-	radius = aRadius;
+	physicsComponent->radius = newRadius;
 
 	health = 3;
 }
@@ -11,6 +11,10 @@ Dot::Dot(float aRadius, PhysicsComponent* physics)
 void Dot::Update(float deltaTime)
 {
 	totalTime += deltaTime;
+	if(physicsComponent->damageTaken > 0){
+		TakeDamage(physicsComponent->damageTaken);
+		physicsComponent->damageTaken = 0;
+	}
 }
 
 void Dot::Render(DotRenderer* aRenderer, float deltaTime)
@@ -23,7 +27,7 @@ void Dot::Render(DotRenderer* aRenderer, float deltaTime)
 
 	aRenderer->SetDrawColor(redColor, greenColor, blueColor, 255);
 	glm::vec2 position = physicsComponent->GetPosition();
-	aRenderer->DrawFilledCircle(position.x, position.y, radius);
+	aRenderer->DrawFilledCircle(position.x, position.y, physicsComponent->radius);
 }
 
 void Dot::TakeDamage(int someDamage)

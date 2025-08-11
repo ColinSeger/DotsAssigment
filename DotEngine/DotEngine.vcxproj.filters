@@ -51,6 +51,12 @@
     <ClCompile Include="Engine\Components\PhysicsComponent.cpp">
       <Filter>Header Files\Engine\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Components\RenderComponent.cpp">
+      <Filter>Header Files\Engine\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Engine.cpp">
+      <Filter>Header Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\QuadTree.h">
@@ -70,6 +76,12 @@
     </ClInclude>
     <ClInclude Include="Engine\Components\PhysicsComponent.h">
       <Filter>Header Files\Engine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Components\RenderComponent.h">
+      <Filter>Header Files\Engine\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Engine.h">
+      <Filter>Header Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

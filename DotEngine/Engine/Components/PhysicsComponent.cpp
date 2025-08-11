@@ -27,12 +27,8 @@ PhysicsComponent::~PhysicsComponent()
 }
 
 void PhysicsComponent::Update(float deltaTime)
-{
-    const int SCREEN_WIDTH = 1000;
-    const int SCREEN_HEIGHT = 800;
-    const float radius = 3;
-    
-    for(auto neighbor : neighbors){
+{    
+    for(auto& neighbor : neighbors){
         // break;
 	 	if(neighbor->GetPosition() == position) continue;
         glm::vec2 neighborPosition = neighbor->GetPosition();
@@ -50,25 +46,27 @@ void PhysicsComponent::Update(float deltaTime)
 
 	 		this->velocity = glm::reflect(velocity, normal);
 	 		neighbor->SetVelocity(glm::reflect(neighbor->GetVelocity(), -normal));
-
-			// float overlap1 = 1.5f * ((minDist + 1) - dist);
-			// float overlap2 = 1.5f * (minDist - dist);
-			// SetPosition((position - normal * overlap1));
-			// neighbor->SetPosition((neighbor->GetPosition() - normal * overlap2));
-			// TakeDamage(1);
-			// radius++;
+			// for (int i = 0; i < neighbor->neighbors.size(); neighbor->neighbors)
+			// {
+			// 	if(neighbor->neighbors[i] == this){
+			// 		neighbor->neighbors.erase(neighbor->neighbors.begin() + i);				
+			// 	}
+			// }
+			
+			damageTaken+=1;
+			radius++;
 		}		
 	}
-    position += velocity * 40.f * deltaTime;
+    position += velocity * 50.f * deltaTime;
 
 	if (position.x - radius < 0.0f)
 	{
 		position.x = radius;
 		velocity.x *= -1;
 	}
-	else if (position.x + radius > SCREEN_WIDTH)
+	else if (position.x + radius > X_BOUND)
 	{
-		position.x = SCREEN_WIDTH - radius;
+		position.x = X_BOUND - radius;
 		velocity.x *= -1;
 	}
 
@@ -77,9 +75,9 @@ void PhysicsComponent::Update(float deltaTime)
 		position.y = radius;
 		velocity.y *= -1;
 	}
-	else if (position.y + radius > SCREEN_HEIGHT)
+	else if (position.y + radius > Y_BOUND)
 	{
-		position.y = SCREEN_HEIGHT - radius;
+		position.y = Y_BOUND - radius;
 		velocity.y *= -1;
 	}
 }

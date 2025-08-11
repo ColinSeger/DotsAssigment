@@ -150,7 +150,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Components\PhysicsComponent.cpp" />
+    <ClCompile Include="Engine\Components\RenderComponent.cpp" />
     <ClCompile Include="Engine\DotRenderer.cpp" />
+    <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\GameObject.cpp" />
     <ClCompile Include="Engine\QuadTree.cpp" />
     <ClCompile Include="Game\Dot.cpp" />
@@ -159,7 +161,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Components\PhysicsComponent.h" />
+    <ClInclude Include="Engine\Components\RenderComponent.h" />
     <ClInclude Include="Engine\DotRenderer.h" />
+    <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\GameObject.h" />
     <ClInclude Include="Engine\QuadTree.h" />
     <ClInclude Include="Game\Dot.h" />

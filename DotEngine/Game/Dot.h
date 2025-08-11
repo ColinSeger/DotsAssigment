@@ -13,18 +13,16 @@ public:
 	void TakeDamage(int someDamage);
 
 	glm::vec2 startPos;
-	glm::vec2 velocity;
+	// glm::vec2 velocity;
 
 	float totalTime = 0;
-	float radius = 0;
 
 	int health;
 
 	Dot operator=(const Dot& other){
 		physicsComponent->SetPosition(other.physicsComponent->GetPosition());
 		this->startPos = other.startPos;
-		this->totalTime = other.totalTime;
-		this->radius = other.radius;
+		this->totalTime = 0;
 		this->health = other.health;
 		return *this;
 	}

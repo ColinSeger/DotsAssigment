@@ -1,7 +1,9 @@
 #include "../Engine/DotRenderer.h"
-#include <SDL3/SDL_render.h>
-#include <SDL3/SDL.h>
-#include <cmath> 
+
+DotRenderer::DotRenderer() 
+{
+	m_sdlRenderer = nullptr;
+}
 
 DotRenderer::DotRenderer(SDL_Window* window) : m_sdlRenderer(nullptr)
 {
@@ -16,8 +18,38 @@ DotRenderer::~DotRenderer()
 		SDL_DestroyRenderer(m_sdlRenderer);
 		m_sdlRenderer = nullptr;
 	}
+	if(gameWindow){
+		SDL_DestroyWindow(gameWindow);
+		gameWindow = nullptr;		
+	}
 }
+int DotRenderer::Init(int width, int height)
+{
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+	{
+		return 1;
+	}
+	if (!TTF_Init())
+	{
+		SDL_Quit();
+		return 1;
+	}
 
+	SDL_Window* window = SDL_CreateWindow("Game", width, height, SDL_WINDOW_OPENGL);
+
+	m_sdlRenderer = SDL_CreateRenderer(window, nullptr);
+
+	if (!m_sdlRenderer)
+	{
+		SDL_DestroyWindow(gameWindow);
+		TTF_Quit();
+		SDL_Quit();
+		delete this;
+		return 1;
+	}
+
+	SetDrawColor(0x00, 0x00, 0x00, 0xFF);
+}
 void DotRenderer::SetDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
 	if (m_sdlRenderer)

@@ -9,14 +9,20 @@
 #include "../Engine/DotRenderer.h"
 #include "../Game/Dot.h"
 
-static const int SCREEN_WIDTH = 1000;
-static const int SCREEN_HEIGHT = 800;
+static const int SCREEN_WIDTH = 1920;
+static const int SCREEN_HEIGHT = 1080;
+static const glm::vec2 SCREEN_CENTRE = {SCREEN_WIDTH /2, SCREEN_HEIGHT / 2};
 
 class Game
 {
 public:
 	Game(DotRenderer* aRenderer);
-	void Update(float aDeltaTime);
+
+	void Init();
+
+	void Start();
+
+	void Update(float deltaTime);
 
 	void Render(float deltaTime);
 

@@ -11,7 +11,7 @@ Game::Game(DotRenderer* aRenderer)
 		physicsComponents.push_back(physics);
 		// physics.SetPosition();
 		Dot dot = Dot(3, &physicsComponents[i]);
-
+		dot.physicsComponent->SetBound(SCREEN_WIDTH, SCREEN_HEIGHT);
 		dots.push_back(dot);
 	}
 
@@ -20,7 +20,25 @@ Game::Game(DotRenderer* aRenderer)
 	// dots[0].radius = 10;
 	//To debug collision
 }
-glm::vec2 SCREEN_CENTRE = {SCREEN_WIDTH /2, SCREEN_HEIGHT / 2};
+
+void Game::Init()
+{
+
+}
+
+void Game::Start()
+{
+	for (size_t i = 0; i < DOT_AMOUNT; i++)
+	{
+		PhysicsComponent physics = PhysicsComponent({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
+		physicsComponents.push_back(physics);
+		// physics.SetPosition();
+		Dot dot = Dot(3, &physicsComponents[i]);
+		dot.physicsComponent->SetBound(SCREEN_WIDTH, SCREEN_HEIGHT);
+		dots.push_back(dot);
+	}
+}
+
 void Game::Update(float deltaTime)
 {
 	QuadTree* quad = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
@@ -28,17 +46,23 @@ void Game::Update(float deltaTime)
 	{
 		quad->Insert(&component);
 	}
-	for (PhysicsComponent& component : physicsComponents)
 	{
-		glm::vec2 dotPosition = component.GetPosition();
+		//Slightly reducing reallocation by having result here
 		std::vector<PhysicsComponent*> result;
-		quad->Search(result, dotPosition);
-		component.SetNeighbors(result);
-		component.Update(deltaTime);
-		// for(auto debug : result){
-		// 	renderer->DrawLineBetweenPoints(component.GetPosition(), debug->GetPosition());
-		// }
+		for (PhysicsComponent& component : physicsComponents)
+		{
+			glm::vec2 dotPosition = component.GetPosition();
+			
+			quad->Search(result, dotPosition);
+			component.SetNeighbors(result);
+			component.Update(deltaTime);
+			// for(auto debug : result){
+			// 	renderer->DrawLineBetweenPoints(component.GetPosition(), debug->GetPosition());
+			// }
+			result.clear();
+		}
 	}
+	
 	for (Dot& dot : dots)
 	{
 		dot.Update(deltaTime);
