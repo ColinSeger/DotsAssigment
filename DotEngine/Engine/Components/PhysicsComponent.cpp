@@ -51,8 +51,8 @@ void PhysicsComponent::Update(float deltaTime)
 	 		this->velocity = glm::reflect(velocity, normal);
 	 		neighbor->SetVelocity(glm::reflect(neighbor->GetVelocity(), -normal));
 
-			float overlap1 = 1.5f * ((minDist + 1) - dist);
-			float overlap2 = 1.5f * (minDist - dist);
+			// float overlap1 = 1.5f * ((minDist + 1) - dist);
+			// float overlap2 = 1.5f * (minDist - dist);
 			// SetPosition((position - normal * overlap1));
 			// neighbor->SetPosition((neighbor->GetPosition() - normal * overlap2));
 			// TakeDamage(1);

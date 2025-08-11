@@ -74,14 +74,17 @@ public:
 
 class QuadTree
 {
-    const static int CAPACITY = 4;
+    const static int CAPACITY = 8;
     const static int MIN_BOX_SIZE = 20;
 
     BoundingBox treeBoundingBox;
 
     std::vector<PhysicsComponent*> nodes;
 
-    std::array<QuadTree*, CAPACITY> directions = {nullptr, nullptr, nullptr, nullptr};
+    std::array<QuadTree*, 4> directions = {nullptr, nullptr, nullptr, nullptr};
+
+    constexpr void ClearNodes();
+    constexpr void AddNode(PhysicsComponent* node);
 public:
     QuadTree();
     QuadTree(BoundingBox boundingBox);
@@ -90,7 +93,7 @@ public:
 
     inline void SubDivide();
 
-    std::vector<PhysicsComponent*> Search(glm::vec2 position);
+    void Search(std::vector<PhysicsComponent*>& result, glm::vec2 position);
 
     bool InRange(glm::vec2 position, float range);
 

@@ -31,10 +31,11 @@ void Game::Update(float deltaTime)
 	for (PhysicsComponent& component : physicsComponents)
 	{
 		glm::vec2 dotPosition = component.GetPosition();
-		auto tempDebug = quad->Search(dotPosition);
-		component.SetNeighbors(tempDebug);
+		std::vector<PhysicsComponent*> result;
+		quad->Search(result, dotPosition);
+		component.SetNeighbors(result);
 		component.Update(deltaTime);
-		// for(auto debug : tempDebug){
+		// for(auto debug : result){
 		// 	renderer->DrawLineBetweenPoints(component.GetPosition(), debug->GetPosition());
 		// }
 	}
@@ -48,7 +49,7 @@ void Game::Update(float deltaTime)
 	}
 
 	Render(deltaTime);
-	// quad->DebugDraw(renderer);
+	quad->DebugDraw(renderer);
 	quad->CleanUp();
 }
 

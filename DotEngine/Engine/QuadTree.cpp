@@ -15,18 +15,10 @@ QuadTree::QuadTree(BoundingBox boundingBox)
 void QuadTree::Insert(PhysicsComponent* newNode)
 {
     if(!newNode || !treeBoundingBox.InBounds(newNode->GetPosition())) return;
-    // if( glm::abs(treeBoundingBox.upperLeft.x - treeBoundingBox.bottomRight.x) <= MIN_BOX_SIZE && 
-    //     glm::abs(treeBoundingBox.upperLeft.y - treeBoundingBox.bottomRight.y) <= MIN_BOX_SIZE)
-    // {
-    //     Node node = Node(newNode->GetPosition());
-    //     nodes.push_back(node);
-    //     std::cout << "Something is wrong with Quad tree \n";
-    //     return;
-    //     // if(nodes.size() <= CAPACITY){     
-    //     // }
-    // }
+
     if(nodes.size() < CAPACITY && !directions[0]){
         nodes.push_back(newNode);
+        // AddNode(newNode);
         return;
     }
     if(!directions[0]){
@@ -38,9 +30,10 @@ void QuadTree::Insert(PhysicsComponent* newNode)
             // break;
         }
         
-        
         tree->Insert(newNode);
     }
+    // int n = sizeof(nodes) / sizeof(nodes[0]);
+    // ClearNodes();
     nodes.clear();
 /*
     if((treeBoundingBox.upperLeft.x + treeBoundingBox.bottomRight.x) / 2 >= newNode->position.x){
@@ -127,23 +120,22 @@ inline void QuadTree::SubDivide()
     }
 }
 
-std::vector<PhysicsComponent*> QuadTree::Search(glm::vec2 position)
+void QuadTree::Search(std::vector<PhysicsComponent*>& result, glm::vec2 position)
 {
-    std::vector<PhysicsComponent*> result;
     float range = 5;
     if(!InRange(position, range)){
         std::vector<PhysicsComponent*> empty;
-        return empty;
+        return;
     }
     if(nodes.size() > 0){
         result.insert(result.end(), nodes.begin(), nodes.end());
     }
     for(QuadTree* tree : directions){
         if(!tree || !tree->InRange(position, range)) continue;
-        auto contains = tree->Search(position);
-        result.insert(result.end(), contains.begin(), contains.end());
+        tree->Search(result, position);
+        // result.insert(result.end(), contains.begin(), contains.end());
     }
-    return result;
+    return;
 }
 
 bool QuadTree::InRange(glm::vec2 position, float range)
@@ -170,9 +162,28 @@ bool QuadTree::InRange(glm::vec2 position, float range)
 
 void QuadTree::CleanUp()
 {
+    // if(!directions[0]) delete this;
     for(QuadTree* tree : directions){
-        if(!tree) continue;
+        if(!tree) break;
         tree->CleanUp();
     }
     delete this;
+}
+
+constexpr void QuadTree::ClearNodes()
+{
+    for (int i = 0; i < CAPACITY; i++)
+    {
+        nodes[i] = nullptr;
+    }
+}
+
+constexpr void QuadTree::AddNode(PhysicsComponent* newNode)
+{
+    for (int i = 0; i < CAPACITY; i++)
+    {
+        if(!nodes[i]){
+            nodes[i] = newNode;
+        }
+    }
 }
