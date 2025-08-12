@@ -5,10 +5,13 @@ Game::Game(DotRenderer* aRenderer)
 {
 	renderer = aRenderer;
 	physicsComponents.reserve(DOT_AMOUNT);
+	renderComponents.reserve(DOT_AMOUNT);
 	for (size_t i = 0; i < DOT_AMOUNT; i++)
 	{
 		PhysicsComponent physics = PhysicsComponent({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
 		physicsComponents.push_back(physics);
+		RenderComponent renderComp = RenderComponent(renderer);
+		renderComponents.push_back(renderComp);
 		// physics.SetPosition();
 		Dot dot = Dot(3, &physicsComponents[i]);
 		dot.physicsComponent->SetBound(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -39,12 +42,12 @@ void Game::Start()
 	}
 }
 
-void Game::Update(float deltaTime)
+int Game::Update(float deltaTime)
 {
-	QuadTree* quad = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
+	quadTree = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
 	for (PhysicsComponent& component : physicsComponents)
 	{
-		quad->Insert(&component);
+		quadTree->Insert(&component);
 	}
 	{
 		//Slightly reducing reallocation by having result here
@@ -53,12 +56,9 @@ void Game::Update(float deltaTime)
 		{
 			glm::vec2 dotPosition = component.GetPosition();
 			
-			quad->Search(result, dotPosition);
+			quadTree->Search(result, dotPosition);
 			component.SetNeighbors(result);
 			component.Update(deltaTime);
-			// for(auto debug : result){
-			// 	renderer->DrawLineBetweenPoints(component.GetPosition(), debug->GetPosition());
-			// }
 			result.clear();
 		}
 	}
@@ -71,20 +71,20 @@ void Game::Update(float deltaTime)
 		Dot newDot = Dot(3, dot.physicsComponent);
 		dot = newDot;
 	}
-
-	// Render(deltaTime);
-	// quad->DebugDraw(renderer);
-	quad->CleanUp();
+	return 1;
 }
 
 void Game::Render(float deltaTime){
-	for (Dot& dot : dots)
+	for (size_t i = 0; i < renderComponents.size(); i++)
 	{
-		dot.Render(renderer, deltaTime);
+		renderComponents[i].Render(physicsComponents[i].GetPosition(), physicsComponents[i].radius, deltaTime);
 	}
+	
 }
 
 void Game::CleanUp()
 {
-
+	if(quadTree){
+		quadTree->CleanUp();		
+	}
 }

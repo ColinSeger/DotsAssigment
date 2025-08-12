@@ -1,6 +1,8 @@
 #pragma once
 #include "../Engine/DotRenderer.h"
 #include "../Game/Game.h"
+#include <chrono>
+#include <future>
 
 // static const int SCREEN_WIDTH = 1000;
 // static const int SCREEN_HEIGHT = 800;
@@ -19,14 +21,18 @@ public:
     const Game* GetGameManager(){ return gameManager; }
 
     DotRenderer* GetRender(){ return renderer; }
+
 private:
 
     void Tick();
-    void PhysicsTick(double deltaTime);
+    void PhysicsTick();
     void FpsCounter(double fps);
+    void DebugText(std::string text, int offset, double fps);
 
     DotRenderer* renderer;
     Game* gameManager;
     TTF_Font* font;
+
+    double deltaTime;
 };
 
