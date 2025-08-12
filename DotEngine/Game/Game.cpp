@@ -72,8 +72,8 @@ void Game::Update(float deltaTime)
 		dot = newDot;
 	}
 
-	Render(deltaTime);
-	quad->DebugDraw(renderer);
+	// Render(deltaTime);
+	// quad->DebugDraw(renderer);
 	quad->CleanUp();
 }
 

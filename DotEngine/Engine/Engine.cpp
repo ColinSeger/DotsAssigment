@@ -8,21 +8,114 @@ Engine::Engine()
         renderer->Init(SCREEN_WIDTH, SCREEN_HEIGHT);
         gameManager = new Game(renderer);       
     }
+    font = TTF_OpenFont("fonts/arial.ttf", 24);
+	if (font == nullptr)
+	{
+		const char* err = SDL_GetError();
+		TTF_Quit();
+		SDL_Quit();
+		return;
+	}
 }
 
 Engine::~Engine()
 {
+    if(gameManager){
+        delete gameManager;
+    }
     if(renderer){
         delete renderer;
     }
+    TTF_CloseFont(font);
+
+    TTF_Quit();
+	SDL_Quit();
 }
 
-int Engine::Init()
+int Engine::Validate()
 {
+    if(!gameManager || !renderer){
+        return 1;
+    }
     return 0;
 }
 
 int Engine::StartGame()
 {
+    Tick();
     return 0;
+}
+
+void Engine::Tick()
+{
+    bool quit = false;
+	SDL_Event event;
+
+	Uint64 lastTick = SDL_GetPerformanceCounter();
+	Uint64 currentTick;
+	double deltaTime = 0;
+	double fps = 0;
+	int frameCount = 0;
+	double fpsAccumulator = 0.0;
+	const double FPS_UPDATE_INTERVAL = 0.2f;
+
+    while (!quit)
+	{
+        while (SDL_PollEvent(&event) != 0)
+		{
+			if (event.type == SDL_EVENT_QUIT)
+			{
+				quit = true;
+			}
+		}
+		currentTick = SDL_GetPerformanceCounter();
+		deltaTime = (double)(currentTick - lastTick) / SDL_GetPerformanceFrequency();
+		lastTick = currentTick;
+
+		frameCount++;
+		fpsAccumulator += deltaTime;
+
+		if (fpsAccumulator >= FPS_UPDATE_INTERVAL)
+		{
+			fps = frameCount / fpsAccumulator;
+			frameCount = 0;
+			fpsAccumulator = 0.0;
+		}
+
+		renderer->SetDrawColor(0x00, 0x00, 0x00, 0xFF); 
+		renderer->Clear();
+
+		// gameManager->Update(deltaTime);
+        PhysicsTick(deltaTime);
+
+        gameManager->Render(deltaTime);
+
+		FpsCounter(fps);
+
+		renderer->Present();
+	}
+}
+
+void Engine::PhysicsTick(double deltaTime)
+{
+    gameManager->Update(deltaTime);
+}
+
+void Engine::FpsCounter(double fps)
+{
+    // - FPS COUNTER -
+    std::string fpsText = "FPS: " + std::to_string(static_cast<int>(fps));
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, fpsText.c_str(), 0, { 255, 255, 255, 255 }); 
+    if (textSurface != nullptr)
+    {
+        SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer->GetSDLRenderer(), textSurface);
+        if (textTexture != nullptr)
+        {
+            SDL_FRect renderQuad = { 0, 0, (float)textSurface->w, (float)textSurface->h }; 
+            renderer->RenderTexture(textTexture, nullptr, &renderQuad);
+            SDL_DestroyTexture(textTexture);
+        }
+        SDL_DestroySurface(textSurface);
+    }
+    // - FPS COUNTER -
 }

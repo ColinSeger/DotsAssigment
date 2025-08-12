@@ -12,7 +12,7 @@ public:
     Engine();
     ~Engine();
 
-    int Init();
+    int Validate();
 
     int StartGame();
 
@@ -20,7 +20,13 @@ public:
 
     DotRenderer* GetRender(){ return renderer; }
 private:
+
+    void Tick();
+    void PhysicsTick(double deltaTime);
+    void FpsCounter(double fps);
+
     DotRenderer* renderer;
     Game* gameManager;
+    TTF_Font* font;
 };
 

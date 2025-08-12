@@ -33,7 +33,7 @@ void PhysicsComponent::Update(float deltaTime)
 	 	if(neighbor->GetPosition() == position) continue;
         glm::vec2 neighborPosition = neighbor->GetPosition();
 	 	float dist = glm::distance(position, neighborPosition);
-	 	float minDist = radius + radius;
+	 	float minDist = radius + neighbor->radius;
 	 	if (dist < minDist)
 	 	{
             float dx = position.x - neighbor->GetPosition().x;
