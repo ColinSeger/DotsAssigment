@@ -12,9 +12,10 @@ RenderComponent::~RenderComponent()
 
 void RenderComponent::Render(glm::vec2 position, float radius, double deltaTime)
 {
-    float redColor = (glm::cos((totalTime + 10) * 0.1f) * 0.5f + 0.5f) * 255.0f;
+    totalTime += deltaTime;
+    float redColor = (glm::cos((totalTime + position.x) * 0.1f) * 0.5f + 0.5f) * 255.0f;
 
-	float greenColor = (glm::cos((totalTime + 10) * 0.9f) * 0.5f + 0.5f) * 255.0f;
+	float greenColor = (glm::cos((totalTime + position.y) * 0.9f) * 0.5f + 0.5f) * 255.0f;
 
 	float blueColor = (glm::cos(totalTime * 0.4f) * 0.5f + 0.5f) * 255.0f;
 

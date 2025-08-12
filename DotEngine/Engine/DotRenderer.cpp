@@ -52,39 +52,27 @@ int DotRenderer::Init(int width, int height)
 }
 void DotRenderer::SetDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
-	if (m_sdlRenderer)
-	{
-		SDL_SetRenderDrawColor(m_sdlRenderer, r, g, b, a);
-	}
+	SDL_SetRenderDrawColor(m_sdlRenderer, r, g, b, a);
 }
 
 void DotRenderer::Clear()
 {
-	if (m_sdlRenderer)
-	{
-		SDL_RenderClear(m_sdlRenderer);
-	}
+	SDL_RenderClear(m_sdlRenderer);
 }
 
 void DotRenderer::Present()
 {
-	if (m_sdlRenderer)
-	{
-		SDL_RenderPresent(m_sdlRenderer);
-	}
+	SDL_RenderPresent(m_sdlRenderer);
 }
 
 void DotRenderer::DrawPoint(int x, int y)
 {
-	if (m_sdlRenderer)
-	{
-		SDL_RenderPoint(m_sdlRenderer, x, y);
-	}
+	SDL_RenderPoint(m_sdlRenderer, x, y);
 }
 
 void DotRenderer::DrawCircle(int centerX, int centerY, int radius)
 {
-	if (!m_sdlRenderer) return;
+	assert(m_sdlRenderer);
 
 	int x = radius;
 	int y = 0;
@@ -116,8 +104,6 @@ void DotRenderer::DrawCircle(int centerX, int centerY, int radius)
 
 void DotRenderer::DrawFilledCircle(int centerX, int centerY, int radius)
 {
-	if (!m_sdlRenderer) return;
-
 	for (int y = -radius; y <= radius; y++) 
 	{
 		int x = static_cast<int>(std::sqrt(radius * radius - y * y));
@@ -127,10 +113,7 @@ void DotRenderer::DrawFilledCircle(int centerX, int centerY, int radius)
 
 void DotRenderer::RenderTexture(SDL_Texture* texture, const SDL_FRect* srcRect, const SDL_FRect* dstRect)
 {
-	if (m_sdlRenderer && texture)
-	{
-		SDL_RenderTexture(m_sdlRenderer, texture, srcRect, dstRect);
-	}
+	SDL_RenderTexture(m_sdlRenderer, texture, srcRect, dstRect);
 }
 
 

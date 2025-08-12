@@ -13,7 +13,8 @@ Game::Game(DotRenderer* aRenderer)
 		RenderComponent renderComp = RenderComponent(renderer);
 		renderComponents.push_back(renderComp);
 		// physics.SetPosition();
-		Dot dot = Dot(3, &physicsComponents[i]);
+		Dot dot = Dot(3, &physicsComponents[i], &renderComponents[i]);
+		// dot.renderComponent = &renderComp;
 		dot.physicsComponent->SetBound(SCREEN_WIDTH, SCREEN_HEIGHT);
 		dots.push_back(dot);
 	}
@@ -31,15 +32,15 @@ void Game::Init()
 
 void Game::Start()
 {
-	for (size_t i = 0; i < DOT_AMOUNT; i++)
-	{
-		PhysicsComponent physics = PhysicsComponent({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
-		physicsComponents.push_back(physics);
-		// physics.SetPosition();
-		Dot dot = Dot(3, &physicsComponents[i]);
-		dot.physicsComponent->SetBound(SCREEN_WIDTH, SCREEN_HEIGHT);
-		dots.push_back(dot);
-	}
+	// for (size_t i = 0; i < DOT_AMOUNT; i++)
+	// {
+	// 	PhysicsComponent physics = PhysicsComponent({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
+	// 	physicsComponents.push_back(physics);
+	// 	// physics.SetPosition();
+	// 	Dot dot = Dot(3, &physicsComponents[i]);
+	// 	dot.physicsComponent->SetBound(SCREEN_WIDTH, SCREEN_HEIGHT);
+	// 	dots.push_back(dot);
+	// }
 }
 
 int Game::Update(float deltaTime)
@@ -68,8 +69,9 @@ int Game::Update(float deltaTime)
 		dot.Update(deltaTime);
 		if(dot.health > 0) continue;
 		dot.physicsComponent->SetPosition({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
-		Dot newDot = Dot(3, dot.physicsComponent);
+		Dot newDot = Dot(3, dot.physicsComponent, dot.renderComponent);
 		dot = newDot;
+		newDot.renderComponent->Reset();
 	}
 	return 1;
 }
@@ -79,7 +81,6 @@ void Game::Render(float deltaTime){
 	{
 		renderComponents[i].Render(physicsComponents[i].GetPosition(), physicsComponents[i].radius, deltaTime);
 	}
-	
 }
 
 void Game::CleanUp()

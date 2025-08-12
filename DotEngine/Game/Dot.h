@@ -7,22 +7,14 @@ class Dot : public GameObject
 {
 public:
 
-	Dot(float radius, PhysicsComponent* physics);
+	Dot(float radius, PhysicsComponent* physics, RenderComponent* renderComponent);
 	void Update(float deltaTime) override;
 	void Render(DotRenderer* render, float deltaTime) override;
 	void TakeDamage(int someDamage);
-
-	glm::vec2 startPos;
-	// glm::vec2 velocity;
-
-	float totalTime = 0;
-
 	int health;
 
 	Dot operator=(const Dot& other){
 		physicsComponent->SetPosition(other.physicsComponent->GetPosition());
-		this->startPos = other.startPos;
-		this->totalTime = 0;
 		this->health = other.health;
 		return *this;
 	}
