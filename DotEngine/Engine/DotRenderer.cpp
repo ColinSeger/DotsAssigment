@@ -49,6 +49,18 @@ int DotRenderer::Init(int width, int height)
 	}
 
 	SetDrawColor(0x00, 0x00, 0x00, 0xFF);
+
+	pixelBuffer.resize(width * height, 0);
+	bufferTexture = SDL_CreateTexture
+	(
+		m_sdlRenderer, 
+		SDL_PIXELFORMAT_ARGB8888,
+		SDL_TEXTUREACCESS_STREAMING,
+		width,
+		height
+	);
+	WIDTH = width;
+	HEIGHT = height;
 }
 void DotRenderer::SetDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
@@ -57,12 +69,18 @@ void DotRenderer::SetDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 
 void DotRenderer::Clear()
 {
+	std::fill(pixelBuffer.begin(), pixelBuffer.end(), 0);
 	SDL_RenderClear(m_sdlRenderer);
 }
 
 void DotRenderer::Present()
 {
 	SDL_RenderPresent(m_sdlRenderer);
+}
+void DotRenderer::RenderDots()
+{
+	SDL_UpdateTexture(bufferTexture, NULL, pixelBuffer.data(), WIDTH * sizeof(uint32_t));
+	RenderTexture(bufferTexture, NULL, NULL);
 }
 
 void DotRenderer::DrawPoint(int x, int y)
@@ -102,12 +120,29 @@ void DotRenderer::DrawCircle(int centerX, int centerY, int radius)
 	}
 }
 
-void DotRenderer::DrawFilledCircle(int centerX, int centerY, int radius)
+void DotRenderer::DrawFilledCircle(int centerX, int centerY, int radius, uint32_t color)
 {
-	for (int y = -radius; y <= radius; y++) 
-	{
-		int x = static_cast<int>(std::sqrt(radius * radius - y * y));
-		SDL_RenderLine(m_sdlRenderer, centerX - x, centerY + y, centerX + x, centerY + y);
+	// for (int y = -radius; y <= radius; y++) 
+	// {
+	// 	int x = static_cast<int>(std::sqrt(radius * radius - y * y));
+	// 	SDL_RenderLine(m_sdlRenderer, centerX - x, centerY + y, centerX + x, centerY + y);
+	// }
+	int minX = std::max(0, centerX - radius);
+	int maxX = std::min(WIDTH -1, centerX + radius);
+	int minY = std::max(0, centerY - radius);
+	int maxY = std::min(HEIGHT -1, centerY + radius);
+
+	for(int y = minY; y <= maxY; y++){
+		for(int x = minX; x <= maxX; x++){
+			int dx = x - centerX;
+			int dy = y - centerY;
+
+			if(dx * dx + dy * dy <= radius * radius){
+				int index = y * WIDTH + x;
+
+				pixelBuffer[index] = color;
+			}
+		}
 	}
 }
 

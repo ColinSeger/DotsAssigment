@@ -92,6 +92,7 @@ void Engine::Tick()
 		renderer->Clear();
         
         gameManager->Render(deltaTime);
+        renderer->RenderDots();
         auto renderTimeAfter = std::chrono::high_resolution_clock::now();
 
         std::chrono::duration<double, std::milli> renderTime = renderTimeAfter - renderTimeBefore ;

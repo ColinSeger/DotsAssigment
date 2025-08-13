@@ -72,6 +72,7 @@ int Game::Update(float deltaTime)
 		Dot newDot = Dot(3, dot.physicsComponent, dot.renderComponent);
 		dot = newDot;
 		newDot.renderComponent->Reset();
+		newDot.renderComponent->SetStartPos(newDot.physicsComponent->GetPosition());
 	}
 	return 1;
 }

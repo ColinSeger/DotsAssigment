@@ -30,7 +30,10 @@ public:
     void Present();
 
     void DrawCircle(int centerX, int centerY, int radius);
-    void DrawFilledCircle(int centerX, int centerY, int radius);
+    void DrawFilledCircle(int centerX, int centerY, int radius, uint32_t color);
+
+    /*Test on description*/
+    void RenderDots();
     void RenderTexture(SDL_Texture* texture, const SDL_FRect* srcRect, const SDL_FRect* dstRect);
 
     void DrawLineBetweenPoints(glm::vec2 point1, glm::vec2 point2){
@@ -44,6 +47,11 @@ public:
 private:
     SDL_Window* gameWindow;
     SDL_Renderer* m_sdlRenderer;
+    SDL_Texture* bufferTexture;
+    int WIDTH = 0;
+    int HEIGHT = 0;
+    std::vector<uint32_t> pixelBuffer;
+    
 
     void DrawPoint(int x, int y);
 

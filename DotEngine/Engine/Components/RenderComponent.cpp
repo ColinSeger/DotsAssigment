@@ -13,12 +13,12 @@ RenderComponent::~RenderComponent()
 void RenderComponent::Render(glm::vec2 position, float radius, double deltaTime)
 {
     totalTime += deltaTime;
-    float redColor = (glm::cos((totalTime + position.x) * 0.1f) * 0.5f + 0.5f) * 255.0f;
+    int redColor = (glm::cos((totalTime + startPos.x) * 0.1f) * 0.5f + 0.5f) * 255.0f;
 
-	float greenColor = (glm::cos((totalTime + position.y) * 0.9f) * 0.5f + 0.5f) * 255.0f;
+	int greenColor = (glm::cos((totalTime + startPos.y) * 0.9f) * 0.5f + 0.5f) * 255.0f;
 
-	float blueColor = (glm::cos(totalTime * 0.4f) * 0.5f + 0.5f) * 255.0f;
-
-	renderer->SetDrawColor(redColor, greenColor, blueColor, 255);
-	renderer->DrawFilledCircle(position.x, position.y, radius);
+	int blueColor = (glm::cos(totalTime * 0.4f) * 0.5f + 0.5f) * 255.0f;
+	uint32_t test = ((redColor & 0xff) << 24) + ((greenColor & 0xff) << 16) + ((blueColor & 0xff) << 8)
+		+ (255 & 0xff);
+	renderer->DrawFilledCircle(position.x, position.y, radius, test);
 }
