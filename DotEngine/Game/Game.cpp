@@ -82,6 +82,22 @@ void Game::Render(float deltaTime){
 	{
 		renderComponents[i].Render(physicsComponents[i].GetPosition(), physicsComponents[i].radius, deltaTime);
 	}
+	if(debugMode == DebugDrawMode::Quad && quadTree){
+		quadTree->DebugDraw(renderer);
+	}
+	if(debugMode == DebugDrawMode::Both && quadTree){
+		quadTree->DebugDraw(renderer);
+		for (size_t i = 0; i < physicsComponents.size(); i++)
+		{
+			// auto neighbors = physicsComponents[i].GetNeighbors();
+			// for (int n = 0; 0 < neighbors.size(); n++)
+			// {
+			// 	renderer->DrawLineBetweenPoints(physicsComponents[i].GetPosition(), neighbors[n]->GetPosition());
+			// }
+			
+		}
+		
+	}
 }
 
 void Game::CleanUp()

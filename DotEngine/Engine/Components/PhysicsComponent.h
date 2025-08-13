@@ -4,6 +4,7 @@
 #include <glm/gtc/constants.hpp>
 #include <time.h>
 #include "glm/glm.hpp"
+// #include "../../Engine/GameObject.h"
 
 
 class PhysicsComponent
@@ -11,6 +12,7 @@ class PhysicsComponent
 public:
     PhysicsComponent();
     PhysicsComponent(glm::vec2 newPosition);
+    // PhysicsComponent(glm::vec2 newPosition, GameObject* parentGameObject);
     PhysicsComponent(glm::vec2 newPosition, glm::vec2 startingVelocity);
     ~PhysicsComponent();
 
@@ -23,6 +25,7 @@ public:
     const void SetBound(const int x, const int y){ X_BOUND = x; Y_BOUND = y;}
 
     const void SetNeighbors(std::vector<PhysicsComponent*> newNeighbors) { neighbors = newNeighbors;};
+    std::vector<PhysicsComponent*>& GetNeighbors() { return neighbors; };
 
     void Update(float deltaTime);
     int damageTaken;
@@ -33,9 +36,9 @@ private:
     
     // ObjectBoundingBox boundingBox;
     std::vector<PhysicsComponent*> neighbors;
-
-    int X_BOUND;
-    int Y_BOUND;
+    // GameObject* parentObject;
+    uint16_t X_BOUND;
+    uint16_t Y_BOUND;
 };
 
 class ObjectBoundingBox

@@ -4,6 +4,7 @@ PhysicsComponent::PhysicsComponent()
 {
     this->position = glm::vec2(10, 10);
     this->velocity = glm::vec2(1, 1);
+	// this->parentObject = nullptr;
 }
 PhysicsComponent::PhysicsComponent(glm::vec2 newPosition)
 {
@@ -15,11 +16,25 @@ PhysicsComponent::PhysicsComponent(glm::vec2 newPosition)
 
 	float angle = dist(rng) * glm::pi<float>() / 100.0f;
 	this->velocity = glm::vec2(cos(angle), sin(angle));
+	// this->parentObject = nullptr;
 }
+// PhysicsComponent::PhysicsComponent(glm::vec2 newPosition, GameObject* parentGameObject)
+// {
+//     this->position = newPosition;
+// 	// this->parentObject = parentGameObject;
+
+//     static std::mt19937 rng(static_cast<unsigned int>(time(nullptr)));
+// 	std::uniform_real_distribution<float> dist(-100.0f, 100.0f);
+//     this->velocity = glm::vec2(dist(rng), dist(rng));
+
+// 	float angle = dist(rng) * glm::pi<float>() / 100.0f;
+// 	this->velocity = glm::vec2(cos(angle), sin(angle));
+// }
 PhysicsComponent::PhysicsComponent(glm::vec2 newPosition, glm::vec2 startingVelocity)
 {
     this->position = newPosition;
     this->velocity = startingVelocity;
+	// this->parentObject = nullptr;
 }
 
 PhysicsComponent::~PhysicsComponent()

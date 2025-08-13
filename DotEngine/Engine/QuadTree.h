@@ -4,27 +4,6 @@
 #include "../Engine/Components/PhysicsComponent.h"
 #include <vector>
 #include <array>
-
-struct Node
-{
-    glm::vec2 position;
-    
-    Node(){
-        position = {0,0};
-    }
-
-    Node(float x, float y){
-        position = {x, y};
-    }
-    Node(glm::vec2 newPosition){
-        position = newPosition;
-    }
-
-    glm::vec2 GetPosition(){
-        return position;
-    }
-};
-
 struct BoundingBox
 {
 public:

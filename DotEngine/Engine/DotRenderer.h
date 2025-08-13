@@ -56,6 +56,5 @@ private:
     void DrawPoint(int x, int y);
 
     DotRenderer(const DotRenderer&) = delete;
-    // DotRenderer& operator=(const DotRenderer&) = delete;
 };
 

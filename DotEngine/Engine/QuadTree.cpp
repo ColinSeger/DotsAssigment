@@ -124,16 +124,15 @@ void QuadTree::Search(std::vector<PhysicsComponent*>& result, glm::vec2 position
 {
     float range = 5;
     if(!InRange(position, range)){
-        std::vector<PhysicsComponent*> empty;
         return;
     }
     if(nodes.size() > 0){
         result.insert(result.end(), nodes.begin(), nodes.end());
+        return;
     }
     for(QuadTree* tree : directions){
         if(!tree || !tree->InRange(position, range)) continue;
         tree->Search(result, position);
-        // result.insert(result.end(), contains.begin(), contains.end());
     }
     return;
 }
