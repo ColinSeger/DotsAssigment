@@ -21,7 +21,7 @@ public:
     bool InBounds(float xPos, float yPos){
         return InBounds({xPos, yPos});
     }
-    bool InBounds(glm::vec2 position){
+    inline bool InBounds(glm::vec2 position){
         if(position.x >= upperLeft.x && position.x <= bottomRight.x
             && position.y >= upperLeft.y && position.y <= bottomRight.y){
             return true;
@@ -38,42 +38,31 @@ public:
         return bottomRight;
     }
 
-    BoundingBox operator/(int divideBy){
-        float upperX = (upperLeft.x / divideBy);
-        float upperY = (upperLeft.y / divideBy);
-        float bottomX = (bottomRight.x / divideBy);
-        float bottomY = (bottomRight.y / divideBy);
+    // BoundingBox operator/(int divideBy){
+    //     float upperX = (upperLeft.x / divideBy);
+    //     float upperY = (upperLeft.y / divideBy);
+    //     float bottomX = (bottomRight.x / divideBy);
+    //     float bottomY = (bottomRight.y / divideBy);
         
-        BoundingBox returnBounds;
-        returnBounds.upperLeft = {upperX, upperY};
-        returnBounds.bottomRight = {bottomX, bottomY};
-        return returnBounds;
-    }
+    //     BoundingBox returnBounds;
+    //     returnBounds.upperLeft = {upperX, upperY};
+    //     returnBounds.bottomRight = {bottomX, bottomY};
+    //     return returnBounds;
+    // }
 };
-
+const int CAPACITY = 8;
 class QuadTree
 {
-    const static int CAPACITY = 8;
-    const static int MIN_BOX_SIZE = 20;
-
-    BoundingBox treeBoundingBox;
-
-    std::vector<PhysicsComponent*> nodes;
-
-    std::array<QuadTree*, 4> directions = {nullptr, nullptr, nullptr, nullptr};
-
-    constexpr void ClearNodes();
-    constexpr void AddNode(PhysicsComponent* node);
 public:
     QuadTree();
     QuadTree(BoundingBox boundingBox);
 
-    void Insert(PhysicsComponent* newNode);
-
-    inline void SubDivide();
+    /*Tries to add new node, will crash if nullptr is inserted*/
+    bool Insert(PhysicsComponent* newNode);
 
     void Search(std::vector<PhysicsComponent*>& result, glm::vec2 position);
 
+    /*Performs a check on bounding box to see if they are in range*/
     bool InRange(glm::vec2 position, float range);
 
     void CleanUp();
@@ -92,8 +81,19 @@ public:
         }
     }
 
-    BoundingBox GetBounds(){
+    BoundingBox& GetBounds(){
         return treeBoundingBox;
     }
+
+private:
+    std::array<QuadTree*, 4> directions = {nullptr, nullptr, nullptr, nullptr};
+    
+    std::vector<PhysicsComponent*> nodes;
+    
+    BoundingBox treeBoundingBox;
+
+    constexpr void ClearNodes();
+    constexpr void AddNode(PhysicsComponent* node);
+    inline void SubDivide();
 };
 

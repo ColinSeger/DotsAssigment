@@ -122,11 +122,6 @@ void DotRenderer::DrawCircle(int centerX, int centerY, int radius)
 
 void DotRenderer::DrawFilledCircle(int centerX, int centerY, int radius, uint32_t color)
 {
-	// for (int y = -radius; y <= radius; y++) 
-	// {
-	// 	int x = static_cast<int>(std::sqrt(radius * radius - y * y));
-	// 	SDL_RenderLine(m_sdlRenderer, centerX - x, centerY + y, centerX + x, centerY + y);
-	// }
 	int minX = std::max(0, centerX - radius);
 	int maxX = std::min(WIDTH -1, centerX + radius);
 	int minY = std::max(0, centerY - radius);
