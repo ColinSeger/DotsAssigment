@@ -4,6 +4,7 @@
 #include <glm/gtc/constants.hpp>
 #include <time.h>
 #include "glm/glm.hpp"
+#include "../../Engine/Constants.h"
 // #include "../../Engine/GameObject.h"
 
 
@@ -22,7 +23,7 @@ public:
     const void SetVelocity(glm::vec2 newVelocity){ this->velocity = newVelocity; }
     glm::vec2 GetVelocity() const{ return this->velocity; }
 
-    const void SetBound(const int x, const int y){ X_BOUND = x; Y_BOUND = y;}
+    // const void SetBound(const int x, const int y){ X_BOUND = x; Y_BOUND = y;}
 
     const void SetNeighbors(std::vector<PhysicsComponent*> newNeighbors) { neighbors = newNeighbors;};
     std::vector<PhysicsComponent*>& GetNeighbors() { return neighbors; };
@@ -34,11 +35,7 @@ private:
     glm::vec2 position;
     glm::vec2 velocity;
     
-    // ObjectBoundingBox boundingBox;
     std::vector<PhysicsComponent*> neighbors;
-    // GameObject* parentObject;
-    uint16_t X_BOUND;
-    uint16_t Y_BOUND;
 };
 
 class ObjectBoundingBox

@@ -3,11 +3,11 @@
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_render.h>
 #include <SDL3_ttf/SDL_ttf.h>
-#include <cmath> 
 #include <cmath>
 #include <iostream>
 #include <string>
 #include <vector>
+#include "../Engine/Constants.h"
 
 class DotRenderer
 {
@@ -20,7 +20,7 @@ public:
     ~DotRenderer();
     
     
-    int Init(int width, int height);
+    int Init();
 
 
     SDL_Renderer* GetSDLRenderer() const { return m_sdlRenderer; }
@@ -48,8 +48,6 @@ private:
     SDL_Window* gameWindow;
     SDL_Renderer* m_sdlRenderer;
     SDL_Texture* bufferTexture;
-    int WIDTH = 0;
-    int HEIGHT = 0;
     std::vector<uint32_t> pixelBuffer;
     
 

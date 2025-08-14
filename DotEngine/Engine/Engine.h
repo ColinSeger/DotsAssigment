@@ -1,5 +1,6 @@
 #pragma once
 #include "../Engine/DotRenderer.h"
+#include "../Engine/Constants.h"
 #include "../Game/Game.h"
 #include <chrono>
 #include <future>

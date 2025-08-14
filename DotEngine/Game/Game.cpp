@@ -6,6 +6,7 @@ Game::Game(DotRenderer* aRenderer)
 	renderer = aRenderer;
 	physicsComponents.reserve(DOT_AMOUNT);
 	renderComponents.reserve(DOT_AMOUNT);
+	std::vector<PhysicsComponent*> componentReference;
 	for (size_t i = 0; i < DOT_AMOUNT; i++)
 	{
 		PhysicsComponent physics = PhysicsComponent({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
@@ -15,10 +16,11 @@ Game::Game(DotRenderer* aRenderer)
 		// physics.SetPosition();
 		Dot dot = Dot(3, &physicsComponents[i], &renderComponents[i]);
 		// dot.renderComponent = &renderComp;
-		dot.physicsComponent->SetBound(SCREEN_WIDTH, SCREEN_HEIGHT);
+		// dot.physicsComponent->SetBound(SCREEN_WIDTH, SCREEN_HEIGHT);
 		dots.push_back(dot);
+		componentReference.push_back(&physics);
 	}
-
+	swapTree = new SwapTree(componentReference);
 	//To debug collision
 	// dots[0].overriden = true;
 	// dots[0].radius = 10;
@@ -30,38 +32,25 @@ void Game::Init()
 
 }
 
-void Game::Start()
-{
-	// for (size_t i = 0; i < DOT_AMOUNT; i++)
-	// {
-	// 	PhysicsComponent physics = PhysicsComponent({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
-	// 	physicsComponents.push_back(physics);
-	// 	// physics.SetPosition();
-	// 	Dot dot = Dot(3, &physicsComponents[i]);
-	// 	dot.physicsComponent->SetBound(SCREEN_WIDTH, SCREEN_HEIGHT);
-	// 	dots.push_back(dot);
-	// }
-}
-
 int Game::Update(float deltaTime)
 {
+	// quadTree = swapTree->GetQuadTree();
 	quadTree = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
 	for (PhysicsComponent& component : physicsComponents)
 	{
 		quadTree->Insert(&component);
 	}
+	 
+	//Slightly reducing reallocation by having result here
+	std::vector<PhysicsComponent*> result;
+	for (PhysicsComponent& component : physicsComponents)
 	{
-		//Slightly reducing reallocation by having result here
-		std::vector<PhysicsComponent*> result;
-		for (PhysicsComponent& component : physicsComponents)
-		{
-			glm::vec2 dotPosition = component.GetPosition();
-			
-			quadTree->Search(result, dotPosition);
-			component.SetNeighbors(result);
-			component.Update(deltaTime);
-			result.clear();
-		}
+		glm::vec2 dotPosition = component.GetPosition();
+		
+		quadTree->Search(result, dotPosition);
+		component.SetNeighbors(result);
+		component.Update(deltaTime);
+		result.clear();
 	}
 	
 	for (Dot& dot : dots)

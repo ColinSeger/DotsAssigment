@@ -37,18 +37,6 @@ public:
     {
         return bottomRight;
     }
-
-    // BoundingBox operator/(int divideBy){
-    //     float upperX = (upperLeft.x / divideBy);
-    //     float upperY = (upperLeft.y / divideBy);
-    //     float bottomX = (bottomRight.x / divideBy);
-    //     float bottomY = (bottomRight.y / divideBy);
-        
-    //     BoundingBox returnBounds;
-    //     returnBounds.upperLeft = {upperX, upperY};
-    //     returnBounds.bottomRight = {bottomX, bottomY};
-    //     return returnBounds;
-    // }
 };
 const int CAPACITY = 8;
 class QuadTree

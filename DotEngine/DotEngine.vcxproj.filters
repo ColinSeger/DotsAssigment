@@ -57,6 +57,9 @@
     <ClCompile Include="Engine\Engine.cpp">
       <Filter>Header Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\QuadSwapChainTest\SwapTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\QuadTree.h">
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Engine.h">
       <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\QuadSwapChainTest\SwapTree.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -79,9 +79,9 @@ void PhysicsComponent::Update(float deltaTime)
 		position.x = radius;
 		velocity.x *= -1;
 	}
-	else if (position.x + radius > X_BOUND)
+	else if (position.x + radius > SCREEN_WIDTH)
 	{
-		position.x = X_BOUND - radius;
+		position.x = SCREEN_WIDTH - radius;
 		velocity.x *= -1;
 	}
 
@@ -90,9 +90,9 @@ void PhysicsComponent::Update(float deltaTime)
 		position.y = radius;
 		velocity.y *= -1;
 	}
-	else if (position.y + radius > Y_BOUND)
+	else if (position.y + radius > SCREEN_HEIGHT)
 	{
-		position.y = Y_BOUND - radius;
+		position.y = SCREEN_HEIGHT - radius;
 		velocity.y *= -1;
 	}
 }

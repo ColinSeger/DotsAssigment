@@ -154,6 +154,7 @@
     <ClCompile Include="Engine\DotRenderer.cpp" />
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Engine\GameObject.cpp" />
+    <ClCompile Include="Engine\QuadSwapChainTest\SwapTree.cpp" />
     <ClCompile Include="Engine\QuadTree.cpp" />
     <ClCompile Include="Game\Dot.cpp" />
     <ClCompile Include="Game\Game.cpp" />
@@ -165,6 +166,7 @@
     <ClInclude Include="Engine\DotRenderer.h" />
     <ClInclude Include="Engine\Engine.h" />
     <ClInclude Include="Engine\GameObject.h" />
+    <ClInclude Include="Engine\QuadSwapChainTest\SwapTree.h" />
     <ClInclude Include="Engine\QuadTree.h" />
     <ClInclude Include="Game\Dot.h" />
     <ClInclude Include="Game\Game.h" />

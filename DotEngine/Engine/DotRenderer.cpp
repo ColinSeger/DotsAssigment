@@ -23,7 +23,7 @@ DotRenderer::~DotRenderer()
 		gameWindow = nullptr;		
 	}
 }
-int DotRenderer::Init(int width, int height)
+int DotRenderer::Init()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -35,7 +35,7 @@ int DotRenderer::Init(int width, int height)
 		return 1;
 	}
 
-	SDL_Window* window = SDL_CreateWindow("Game", width, height, SDL_WINDOW_OPENGL);
+	SDL_Window* window = SDL_CreateWindow("Game", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL);
 
 	m_sdlRenderer = SDL_CreateRenderer(window, nullptr);
 
@@ -48,19 +48,17 @@ int DotRenderer::Init(int width, int height)
 		return 1;
 	}
 
-	SetDrawColor(0x00, 0x00, 0x00, 0xFF);
+	// SetDrawColor(0x00, 0x00, 0x00, 0xFF);
 
-	pixelBuffer.resize(width * height, 0);
+	pixelBuffer.resize(SCREEN_WIDTH * SCREEN_HEIGHT, 0);
 	bufferTexture = SDL_CreateTexture
 	(
 		m_sdlRenderer, 
 		SDL_PIXELFORMAT_ARGB8888,
 		SDL_TEXTUREACCESS_STREAMING,
-		width,
-		height
+		SCREEN_WIDTH,
+		SCREEN_HEIGHT
 	);
-	WIDTH = width;
-	HEIGHT = height;
 }
 void DotRenderer::SetDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 {
@@ -79,7 +77,7 @@ void DotRenderer::Present()
 }
 void DotRenderer::RenderDots()
 {
-	SDL_UpdateTexture(bufferTexture, NULL, pixelBuffer.data(), WIDTH * sizeof(uint32_t));
+	SDL_UpdateTexture(bufferTexture, NULL, pixelBuffer.data(), SCREEN_WIDTH * sizeof(uint32_t));
 	RenderTexture(bufferTexture, NULL, NULL);
 }
 
@@ -123,9 +121,9 @@ void DotRenderer::DrawCircle(int centerX, int centerY, int radius)
 void DotRenderer::DrawFilledCircle(int centerX, int centerY, int radius, uint32_t color)
 {
 	int minX = std::max(0, centerX - radius);
-	int maxX = std::min(WIDTH -1, centerX + radius);
+	int maxX = std::min(SCREEN_WIDTH -1, centerX + radius);
 	int minY = std::max(0, centerY - radius);
-	int maxY = std::min(HEIGHT -1, centerY + radius);
+	int maxY = std::min(SCREEN_HEIGHT -1, centerY + radius);
 
 	for(int y = minY; y <= maxY; y++){
 		for(int x = minX; x <= maxX; x++){
@@ -133,7 +131,7 @@ void DotRenderer::DrawFilledCircle(int centerX, int centerY, int radius, uint32_
 			int dy = y - centerY;
 
 			if(dx * dx + dy * dy <= radius * radius){
-				int index = y * WIDTH + x;
+				int index = y * SCREEN_WIDTH + x;
 
 				pixelBuffer[index] = color;
 			}

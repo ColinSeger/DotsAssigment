@@ -5,7 +5,7 @@ Engine::Engine()
 {
     renderer = new DotRenderer();
     if(renderer){
-        renderer->Init(SCREEN_WIDTH, SCREEN_HEIGHT);
+        renderer->Init();
         gameManager = new Game(renderer);       
     }
     font = TTF_OpenFont("fonts/arial.ttf", 24);

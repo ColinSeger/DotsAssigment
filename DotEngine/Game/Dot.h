@@ -1,5 +1,6 @@
 #pragma once
 #include "glm/glm.hpp"
+#include "../Engine/Constants.h"
 #include "../Engine/Components/PhysicsComponent.h"
 #include "../Engine/GameObject.h"
 
@@ -20,6 +21,6 @@ public:
 	}
 private:
 
-	const float DOT_VELOCITY = 50.0f;
+	
 };
 
