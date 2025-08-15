@@ -24,7 +24,8 @@ public:
     glm::vec2 GetVelocity() const{ return this->velocity; }
 
     // const void SetBound(const int x, const int y){ X_BOUND = x; Y_BOUND = y;}
-
+    const void ClearNeighbors(){ neighbors.clear(); }
+    const void AddNeighbor(PhysicsComponent* newNeighbor) { neighbors.push_back(newNeighbor);};
     const void SetNeighbors(std::vector<PhysicsComponent*> newNeighbors) { neighbors = newNeighbors;};
     std::vector<PhysicsComponent*>& GetNeighbors() { return neighbors; };
 

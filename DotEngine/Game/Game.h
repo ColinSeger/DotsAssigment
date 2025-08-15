@@ -27,7 +27,7 @@ public:
 
 	float GetTime(){return currentTime;}
 private:
-	const int DOT_AMOUNT = 1000;	
+	const int DOT_AMOUNT = 10000;	
 
 	DotRenderer* renderer;
 	QuadTree* quadTree = nullptr;

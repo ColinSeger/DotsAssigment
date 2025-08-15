@@ -47,31 +47,20 @@ void PhysicsComponent::Update(float deltaTime)
         // break;
 	 	if(neighbor->GetPosition() == position) continue;
         glm::vec2 neighborPosition = neighbor->GetPosition();
-	 	float dist = glm::distance(position, neighborPosition);
-	 	float minDist = radius + neighbor->radius;
-	 	if (dist < minDist)
-	 	{
-            float dx = position.x - neighbor->GetPosition().x;
-            float dy = position.y - neighbor->GetPosition().y;
-            float vx = neighbor->GetVelocity().x - velocity.x;
-            float vy = neighbor->GetVelocity().y - velocity.y;
-            float dot = dx * vx + dy * vy;
-            if(dot < 0) continue;
-	 		glm::vec2 normal = glm::normalize(position - neighborPosition);
+		float dx = position.x - neighbor->GetPosition().x;
+		float dy = position.y - neighbor->GetPosition().y;
+		float vx = neighbor->GetVelocity().x - velocity.x;
+		float vy = neighbor->GetVelocity().y - velocity.y;
+		float dot = dx * vx + dy * vy;
+		if(dot < 0) continue;
+		glm::vec2 normal = glm::normalize(position - neighborPosition);
 
-	 		this->velocity = glm::reflect(velocity, normal);
-	 		neighbor->SetVelocity(glm::reflect(neighbor->GetVelocity(), -normal));
-			// for (int i = 0; i < neighbor->neighbors.size(); neighbor->neighbors)
-			// {
-			// 	if(neighbor->neighbors[i] == this){
-			// 		neighbor->neighbors.erase(neighbor->neighbors.begin() + i);				
-			// 	}
-			// }
-			
-			damageTaken+=1;
-			radius++;
-		}		
+		this->velocity = glm::reflect(velocity, normal);
+		neighbor->SetVelocity(glm::reflect(neighbor->GetVelocity(), -normal));
+		damageTaken+=1;
+		radius++;	
 	}
+	neighbors.clear();
     position += velocity * 50.f * deltaTime;
 
 	if (position.x - radius < 0.0f)

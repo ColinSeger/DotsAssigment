@@ -46,9 +46,14 @@ int Game::Update(float deltaTime)
 	for (PhysicsComponent& component : physicsComponents)
 	{
 		glm::vec2 dotPosition = component.GetPosition();
+		// component.ClearNeighbors();
 		
 		quadTree->Search(result, dotPosition);
-		component.SetNeighbors(result);
+		for(PhysicsComponent* neighbor : result){
+			if(glm::distance(component.GetPosition(), neighbor->GetPosition()) > (component.radius + neighbor->radius)) continue;
+			component.AddNeighbor(neighbor);
+		}
+		// component.SetNeighbors(result);
 		component.Update(deltaTime);
 		result.clear();
 	}

@@ -11,7 +11,8 @@ public:
     glm::vec2 bottomRight;
 
     BoundingBox(){
-
+        upperLeft = {0, 0};
+        bottomRight = {0, 0};
     }
     BoundingBox(glm::vec2 newLeft, glm::vec2 newRight){
         upperLeft = newLeft;

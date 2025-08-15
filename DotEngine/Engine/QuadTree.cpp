@@ -40,6 +40,8 @@ inline void QuadTree::SubDivide()
 {
     glm::vec2 topLeft = treeBoundingBox.UpperLeft();
     glm::vec2 bottomRight = treeBoundingBox.BottomRight();
+    // glm::vec2 newTopLeft = topLeft;
+    // glm::vec2 newBottomRight = bottomRight;
     BoundingBox newBox;
     {// Top Left
         bottomRight.x = (topLeft.x + bottomRight.x) / 2;
