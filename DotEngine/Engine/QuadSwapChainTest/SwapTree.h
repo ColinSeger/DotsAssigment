@@ -1,4 +1,3 @@
-/*
 #pragma once
 #include <future>
 #include <thread>
@@ -26,10 +25,9 @@ private:
     // QuadTree* selection;
     // QuadTree* primary;
     // QuadTree* secondary;
-    // std::thread thread;
+    std::thread thread;
     std::mutex lockThing;
     std::stack<QuadTree*> readyTrees;
     bool ready = false;
     std::vector<PhysicsComponent*> components;
 };
-*/

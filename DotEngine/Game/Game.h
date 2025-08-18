@@ -8,7 +8,7 @@
 #include "../Engine/Components/RenderComponent.h"
 #include "../Engine/GameObject.h"
 #include "../Engine/QuadTree.h"
-// #include "../Engine/QuadSwapChainTest/SwapTree.h"
+#include "../Engine/QuadSwapChainTest/SwapTree.h"
 #include "../Engine/DotRenderer.h"
 #include "../Game/Dot.h"
 
@@ -27,11 +27,11 @@ public:
 
 	float GetTime(){return currentTime;}
 private:
-	const int DOT_AMOUNT = 1000;	
+	const int DOT_AMOUNT = 35000;	
 
 	DotRenderer* renderer = nullptr;
 	QuadTree* quadTree = nullptr;
-	// SwapTree* swapTree = nullptr;
+	SwapTree* swapTree = nullptr;
 	
 	std::vector<Dot> dots;
 	std::vector<PhysicsComponent> physicsComponents;

@@ -1,4 +1,4 @@
-/*#include "../../Engine/QuadSwapChainTest/SwapTree.h"
+#include "../../Engine/QuadSwapChainTest/SwapTree.h"
 
 SwapTree::SwapTree(std::vector<PhysicsComponent*> componentContainer)
 {
@@ -9,8 +9,9 @@ SwapTree::SwapTree(std::vector<PhysicsComponent*> componentContainer)
     //     primary->Insert(component);
     // }
     // readyTrees
-    // compute = std::async(&SwapTree::Construct, this);
-    // std::thread thread(SwapTree::Construct);
+    compute = std::async(&SwapTree::Construct, this);
+    // pthread_mutex_init(lockThing, compute);
+    // std::thread thread(&SwapTree::Construct, this);
 }
 
 SwapTree::~SwapTree()
@@ -37,6 +38,7 @@ void SwapTree::Construct()
     // return;
     while (true)
     {
+        // continue;
         QuadTree* tree = Swap();
         // if(ready) continue;
         if(lockThing.try_lock()){
@@ -45,11 +47,13 @@ void SwapTree::Construct()
         }else{
             tree->CleanUp();            
         }
+        // tree->CleanUp();
     }
 }
 
 QuadTree* SwapTree::GetQuadTree()
 {
+    // return nullptr;
     lockThing.lock();
     if(readyTrees.size() <= 0) {
         lockThing.unlock();
@@ -69,24 +73,4 @@ QuadTree* SwapTree::GetQuadTree()
     ready = false;
     lockThing.unlock(); 
     return result;
-
-    // if(ready){
-    //     if(selection == primary){
-    //         selection = secondary;
-    //         ready = false;
-    //         return selection;
-    //     }
-    //     selection = primary;
-    //     ready = false;
-    //     return selection;
-    // }
-
-    // if(selection){
-    //     // compute = std::async(&SwapTree::Construct, this);
-    //     // compute.get();
-    //     return selection;
-    // }
-    // compute.get();
-    // compute = std::async(&SwapTree::Construct, this);
-    return nullptr;
-}*/
+}
