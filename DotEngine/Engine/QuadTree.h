@@ -4,7 +4,7 @@
 #include "../Engine/Components/PhysicsComponent.h"
 #include <vector>
 #include <array>
-struct BoundingBox
+class BoundingBox
 {
 public:
     glm::vec2 upperLeft;
@@ -39,6 +39,7 @@ public:
         return bottomRight;
     }
 };
+
 const int CAPACITY = 8;
 class QuadTree
 {

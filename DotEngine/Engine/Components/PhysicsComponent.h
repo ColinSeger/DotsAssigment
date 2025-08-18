@@ -5,7 +5,6 @@
 #include <time.h>
 #include "glm/glm.hpp"
 #include "../../Engine/Constants.h"
-// #include "../../Engine/GameObject.h"
 
 
 class PhysicsComponent
@@ -38,7 +37,7 @@ private:
     
     std::vector<PhysicsComponent*> neighbors;
 };
-
+/*
 class ObjectBoundingBox
 {
 public:
@@ -90,3 +89,4 @@ private:
     float width = 10.f;
     // float height = 10.f;
 };
+*/

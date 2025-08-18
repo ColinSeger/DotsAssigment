@@ -81,12 +81,10 @@ void Engine::Tick()
 			frameCount = 0;
 			fpsAccumulator = 0.0;
 		}
-
-		// gameManager->Update(deltaTime);
         
         auto beforeTime = std::chrono::high_resolution_clock::now();
         std::future<void> tick = std::async(&Engine::PhysicsTick, this);
-
+        // PhysicsTick();
         auto renderTimeBefore = std::chrono::high_resolution_clock::now();
         renderer->SetDrawColor(0x00, 0x00, 0x00, 0xFF); 
 		renderer->Clear();

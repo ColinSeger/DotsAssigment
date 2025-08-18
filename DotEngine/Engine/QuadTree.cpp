@@ -3,13 +3,13 @@
 QuadTree::QuadTree()
 {
     nodes.reserve(CAPACITY);
-    treeBoundingBox = BoundingBox();
+    treeBoundingBox = BoundingBox({0, 0}, {10, 10});
 }
 
 QuadTree::QuadTree(BoundingBox boundingBox)
 {
-    nodes.reserve(CAPACITY);
     treeBoundingBox = boundingBox;
+    nodes.reserve(CAPACITY);
 }
 
 bool QuadTree::Insert(PhysicsComponent* newNode)
@@ -25,15 +25,16 @@ bool QuadTree::Insert(PhysicsComponent* newNode)
         SubDivide();
     }
     for(QuadTree* tree : directions){
-        for(auto position : nodes){
-            tree->Insert(position);
+        for(int i = 0; i < nodes.size(); i++){
+            if(!nodes[i]) continue;
+            if(tree->Insert(nodes[i])){
+                nodes[i] = nullptr;
+            }
         }
-        if(tree->Insert(newNode)) {
-            nodes.clear();
-            return true;
-        }
+        tree->Insert(newNode);
     }
-    return false;
+    nodes.clear();
+    return true;
 }
 
 inline void QuadTree::SubDivide()
@@ -42,11 +43,11 @@ inline void QuadTree::SubDivide()
     glm::vec2 bottomRight = treeBoundingBox.BottomRight();
     // glm::vec2 newTopLeft = topLeft;
     // glm::vec2 newBottomRight = bottomRight;
-    BoundingBox newBox;
+    // BoundingBox newBox;
     {// Top Left
         bottomRight.x = (topLeft.x + bottomRight.x) / 2;
         bottomRight.y = (topLeft.y + bottomRight.y) / 2;
-        newBox = BoundingBox(topLeft, bottomRight);
+        BoundingBox newBox = BoundingBox(topLeft, bottomRight);
         directions[0] = new QuadTree(newBox);
     }
     {// Bottom Left
@@ -54,7 +55,7 @@ inline void QuadTree::SubDivide()
         bottomRight = treeBoundingBox.BottomRight();
         topLeft.y = (topLeft.y + bottomRight.y) / 2;
         bottomRight.x = (topLeft.x + bottomRight.x) / 2;
-        newBox = BoundingBox(topLeft, bottomRight);
+        BoundingBox newBox = BoundingBox(topLeft, bottomRight);
         directions[1] = new QuadTree(newBox);
     }
     {// Top Right
@@ -62,7 +63,7 @@ inline void QuadTree::SubDivide()
         bottomRight = treeBoundingBox.BottomRight();
         topLeft.x = (topLeft.x + bottomRight.x) / 2;
         bottomRight.y = (topLeft.y + bottomRight.y) / 2;
-        newBox = BoundingBox(topLeft, bottomRight);
+        BoundingBox newBox = BoundingBox(topLeft, bottomRight);
         directions[2] = new QuadTree(newBox);
     }
     {// Bottom Right
@@ -70,7 +71,7 @@ inline void QuadTree::SubDivide()
         bottomRight = treeBoundingBox.BottomRight();
         topLeft.x = (topLeft.x + bottomRight.x) / 2;
         topLeft.y = (topLeft.y + bottomRight.y) / 2;
-        newBox = BoundingBox(topLeft, bottomRight);
+        BoundingBox newBox = BoundingBox(topLeft, bottomRight);
         directions[3] = new QuadTree(newBox);
     }
 }

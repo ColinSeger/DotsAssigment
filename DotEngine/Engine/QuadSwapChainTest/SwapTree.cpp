@@ -1,8 +1,16 @@
-#include "../../Engine/QuadSwapChainTest/SwapTree.h"
+/*#include "../../Engine/QuadSwapChainTest/SwapTree.h"
 
-SwapTree::SwapTree(std::vector<PhysicsComponent*> components)
+SwapTree::SwapTree(std::vector<PhysicsComponent*> componentContainer)
 {
-    compute = std::async(&SwapTree::Construct, this);
+    components = componentContainer;
+    // primary = new QuadTree(BoundingBox({ 0, 0 }, { (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT }));
+    // for (PhysicsComponent* component : components)
+    // {
+    //     primary->Insert(component);
+    // }
+    // readyTrees
+    // compute = std::async(&SwapTree::Construct, this);
+    // std::thread thread(SwapTree::Construct);
 }
 
 SwapTree::~SwapTree()
@@ -14,31 +22,71 @@ void SwapTree::Start()
 {
 
 }
-void SwapTree::Swap(QuadTree* quad){
-    quad = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
+QuadTree* SwapTree::Swap(){
+    QuadTree* quad = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
     for (PhysicsComponent* component : components)
     {
         quad->Insert(component);
     }
+    return quad;
 }
 
 void SwapTree::Construct()
 {
-    if(primary == selection){
-        Swap(secondary);
-        selection = secondary;
-    }
-    else{
-        Swap(primary);
-        selection = primary;
+    // selection = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
+    // return;
+    while (true)
+    {
+        QuadTree* tree = Swap();
+        // if(ready) continue;
+        if(lockThing.try_lock()){
+            readyTrees.emplace(tree);
+            lockThing.unlock();
+        }else{
+            tree->CleanUp();            
+        }
     }
 }
 
 QuadTree* SwapTree::GetQuadTree()
 {
-    if(selection){
-        return selection;
+    lockThing.lock();
+    if(readyTrees.size() <= 0) {
+        lockThing.unlock();
+        return nullptr;
     }
+    
+    ready = true;
+    QuadTree* result = readyTrees.top();
+    readyTrees.pop();
+    while (readyTrees.size() > 0)
+    {
+        QuadTree* tree = readyTrees.top();
+        tree->CleanUp();
+        
+        readyTrees.pop();
+    }
+    ready = false;
+    lockThing.unlock(); 
+    return result;
+
+    // if(ready){
+    //     if(selection == primary){
+    //         selection = secondary;
+    //         ready = false;
+    //         return selection;
+    //     }
+    //     selection = primary;
+    //     ready = false;
+    //     return selection;
+    // }
+
+    // if(selection){
+    //     // compute = std::async(&SwapTree::Construct, this);
+    //     // compute.get();
+    //     return selection;
+    // }
     // compute.get();
-    return GetQuadTree();
-}
+    // compute = std::async(&SwapTree::Construct, this);
+    return nullptr;
+}*/
