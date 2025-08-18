@@ -27,7 +27,7 @@ public:
 
 	float GetTime(){return currentTime;}
 private:
-	const int DOT_AMOUNT = 35000;	
+	const int DOT_AMOUNT = 20000;	
 
 	DotRenderer* renderer = nullptr;
 	QuadTree* quadTree = nullptr;
@@ -36,6 +36,7 @@ private:
 	std::vector<Dot> dots;
 	std::vector<PhysicsComponent> physicsComponents;
 	std::vector<RenderComponent> renderComponents;
+	std::vector<int> collideAmount;
 
 	float currentTime = 0;
 

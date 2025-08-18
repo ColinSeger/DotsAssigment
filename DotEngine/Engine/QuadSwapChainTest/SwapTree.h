@@ -22,12 +22,13 @@ public:
     
 private:
     std::future<void> compute;
-    // QuadTree* selection;
-    // QuadTree* primary;
-    // QuadTree* secondary;
+    QuadTree* returnValue;
+    QuadTree* selection;
+    QuadTree* primary;
+    QuadTree* secondary;
     std::thread thread;
     std::mutex lockThing;
-    std::stack<QuadTree*> readyTrees;
+    // std::stack<QuadTree*> readyTrees;
     bool ready = false;
     std::vector<PhysicsComponent*> components;
 };

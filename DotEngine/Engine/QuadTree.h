@@ -40,7 +40,7 @@ public:
     }
 };
 
-const int CAPACITY = 8;
+const int CAPACITY = 14;
 class QuadTree
 {
 public:

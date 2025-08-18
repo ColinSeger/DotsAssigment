@@ -4,6 +4,7 @@
 Game::Game(DotRenderer* aRenderer)
 {
 	renderer = aRenderer;
+	collideAmount.resize(DOT_AMOUNT);
 	physicsComponents.reserve(DOT_AMOUNT);
 	renderComponents.reserve(DOT_AMOUNT);
 	
@@ -12,7 +13,9 @@ Game::Game(DotRenderer* aRenderer)
 		PhysicsComponent physics = PhysicsComponent({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
 		physicsComponents.push_back(physics);
 		RenderComponent renderComp = RenderComponent(renderer);
+		renderComp.SetStartPos(physics.GetPosition());
 		renderComponents.push_back(renderComp);
+		
 		// physics.SetPosition();
 		Dot dot = Dot(3, &physicsComponents[i], &renderComponents[i]);
 		// dot.renderComponent = &renderComp;
@@ -40,7 +43,9 @@ void Game::Init()
 int Game::Update(float deltaTime)
 {
 	quadTree = swapTree->GetQuadTree();
-	if(!quadTree) return 1;
+	if(!quadTree) {
+		return 1;
+	}
 	// quadTree = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
 	// for (PhysicsComponent& component : physicsComponents)
 	// {

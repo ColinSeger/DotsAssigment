@@ -38,11 +38,27 @@ void SwapTree::Construct()
     // return;
     while (true)
     {
+        
+        
         // continue;
         QuadTree* tree = Swap();
         // if(ready) continue;
+        
         if(lockThing.try_lock()){
-            readyTrees.emplace(tree);
+            // readyTrees.emplace(tree);
+            if(selection == primary){
+                if(secondary) {
+                    secondary->CleanUp();
+                }
+                secondary = tree;
+                selection = secondary;
+            }else{
+                if(primary){
+                    primary->CleanUp();
+                } 
+                primary = tree;
+                selection = primary;
+            }
             lockThing.unlock();
         }else{
             tree->CleanUp();            
@@ -53,24 +69,14 @@ void SwapTree::Construct()
 
 QuadTree* SwapTree::GetQuadTree()
 {
-    // return nullptr;
     lockThing.lock();
-    if(readyTrees.size() <= 0) {
-        lockThing.unlock();
-        return nullptr;
+    if(selection == primary){
+        returnValue = primary;
+        primary = nullptr;
+    }else{
+        returnValue = secondary;
+        secondary = nullptr;
     }
-    
-    ready = true;
-    QuadTree* result = readyTrees.top();
-    readyTrees.pop();
-    while (readyTrees.size() > 0)
-    {
-        QuadTree* tree = readyTrees.top();
-        tree->CleanUp();
-        
-        readyTrees.pop();
-    }
-    ready = false;
-    lockThing.unlock(); 
-    return result;
+    lockThing.unlock();
+    return returnValue;
 }
