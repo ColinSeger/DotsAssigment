@@ -111,7 +111,10 @@ void Engine::Tick()
 
 void Engine::PhysicsTick()
 {
-    gameManager->Update(deltaTime);
+    while (true)
+    {
+        if(0 == gameManager->Update(deltaTime)) return;
+    }
 }
 
 void Engine::FpsCounter(double fps)

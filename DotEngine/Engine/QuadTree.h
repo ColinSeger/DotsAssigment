@@ -30,6 +30,12 @@ public:
         return false;
     }
 
+    float Area(){
+        float width = bottomRight.x - upperLeft.x;
+        float height = bottomRight.y - upperLeft.y;
+        return width * height;
+    }
+
     const glm::vec2 UpperLeft()
     {
         return upperLeft;

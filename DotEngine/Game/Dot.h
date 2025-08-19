@@ -8,19 +8,22 @@ class Dot : public GameObject
 {
 public:
 
-	Dot(float radius, PhysicsComponent* physics, RenderComponent* renderComponent);
+	Dot(unsigned int newID, float radius, PhysicsComponent* physics, RenderComponent* renderComponent);
 	void Update(float deltaTime) override;
-	void Render(DotRenderer* render, float deltaTime) override;
-	void TakeDamage(int someDamage);
+	void TakeDamage(const int someDamage);
+
+	/*Returns the amount of health on this dot*/
 	const int GetHealth(){ return m_health; }
 
 	Dot operator=(const Dot& other){
 		physicsComponent->SetPosition(other.physicsComponent->GetPosition());
 		this->m_health = other.m_health;
+		this->id = other.id;
+		this->physicsComponent = other.physicsComponent;
+		this->renderComponent = other.renderComponent;
 		return *this;
 	}
 private:
-
-	int m_health;
+	int m_health = 0;
 };
 

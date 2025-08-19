@@ -10,9 +10,17 @@ class GameObject
     virtual void Update(float deltaTime);
 
     virtual void Render(DotRenderer* render, float deltaTime);
-    PhysicsComponent* physicsComponent;
-    RenderComponent* renderComponent;
-    protected:
+    const unsigned int GetId(){ return id; }
+
+    const void SetPosition(glm::vec2 newPosition){ this->physicsComponent->SetPosition(newPosition); }
+    const glm::vec2 GetPosition(){ return this->physicsComponent->GetPosition(); }
+
+    RenderComponent* GetRenderComponent(){ return renderComponent; }
     
+    protected:
+    unsigned int id;
+    PhysicsComponent* physicsComponent;
+    
+    RenderComponent* renderComponent;
 };
 

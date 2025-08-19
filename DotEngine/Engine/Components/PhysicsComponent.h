@@ -16,26 +16,31 @@ public:
     PhysicsComponent(glm::vec2 newPosition, glm::vec2 startingVelocity);
     ~PhysicsComponent();
 
-    const void SetPosition(glm::vec2 newPosition){ this->position = newPosition; }
-    glm::vec2 GetPosition() const{ return this->position; }
+    void SetPosition(glm::vec2 newPosition){ this->m_position = newPosition; }
+    const glm::vec2 GetPosition() const{ return this->m_position; }
 
-    const void SetVelocity(glm::vec2 newVelocity){ this->velocity = newVelocity; }
-    glm::vec2 GetVelocity() const{ return this->velocity; }
+    void SetVelocity(glm::vec2 newVelocity){ this->m_velocity = newVelocity; }
+    const glm::vec2 GetVelocity() const{ return this->m_velocity; }
 
     // const void SetBound(const int x, const int y){ X_BOUND = x; Y_BOUND = y;}
-    const void ClearNeighbors(){ neighbors.clear(); }
-    const void AddNeighbor(PhysicsComponent* newNeighbor) { neighbors.push_back(newNeighbor);};
-    const void SetNeighbors(std::vector<PhysicsComponent*> newNeighbors) { neighbors = newNeighbors;};
-    std::vector<PhysicsComponent*>& GetNeighbors() { return neighbors; };
+    const void ClearNeighbors(){ m_neighbors.clear(); }
+    const void AddNeighbor(PhysicsComponent* newNeighbor) { m_neighbors.push_back(newNeighbor);};
+    const void SetNeighbors(std::vector<PhysicsComponent*> newNeighbors) { m_neighbors = newNeighbors;};
+    std::vector<PhysicsComponent*>& GetNeighbors() { return m_neighbors; };
 
-    void Update(float deltaTime);
-    int damageTaken;
+    uint8_t Update(float deltaTime);
+
+    const void SetRadius(float newRadius){ radius = newRadius; }
+    const float GetRadius(){ return radius; }
+protected:
+
     float radius = 3;
+
 private:
-    glm::vec2 position;
-    glm::vec2 velocity;
+    glm::vec2 m_position;
+    glm::vec2 m_velocity;
     
-    std::vector<PhysicsComponent*> neighbors;
+    std::vector<PhysicsComponent*> m_neighbors;
 };
 /*
 class ObjectBoundingBox

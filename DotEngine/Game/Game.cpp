@@ -17,7 +17,7 @@ Game::Game(DotRenderer* aRenderer)
 		renderComponents.push_back(renderComp);
 		
 		// physics.SetPosition();
-		Dot dot = Dot(3, &physicsComponents[i], &renderComponents[i]);
+		Dot dot = Dot(i , 3, &physicsComponents[i], &renderComponents[i]);
 		// dot.renderComponent = &renderComp;
 		// dot.physicsComponent->SetBound(SCREEN_WIDTH, SCREEN_HEIGHT);
 		dots.push_back(dot);
@@ -56,16 +56,13 @@ int Game::Update(float deltaTime)
 	for (PhysicsComponent& component : physicsComponents)
 	{
 		glm::vec2 dotPosition = component.GetPosition();
-		// component.ClearNeighbors();
 		
 		quadTree->Search(result, dotPosition);
 		for(PhysicsComponent* neighbor : result){
-			if(glm::distance(component.GetPosition(), neighbor->GetPosition()) > (component.radius + neighbor->radius) 
+			if(glm::distance(component.GetPosition(), neighbor->GetPosition()) > (component.GetRadius() + neighbor->GetRadius()) 
 				|| component.GetPosition() == neighbor->GetPosition()) continue;
 			component.AddNeighbor(neighbor);
 		}
-		// component.SetNeighbors(result);
-		component.Update(deltaTime);
 		result.clear();
 	}
 	
@@ -73,19 +70,18 @@ int Game::Update(float deltaTime)
 	{
 		dot.Update(deltaTime);
 		if(dot.GetHealth() > 0) continue;
-		dot.physicsComponent->SetPosition({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
-		Dot newDot = Dot(3, dot.physicsComponent, dot.renderComponent);
+		dot.SetPosition({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
+		Dot newDot = Dot(dot.GetId(), 3, &physicsComponents[dot.GetId()], &renderComponents[dot.GetId()]);
 		dot = newDot;
-		newDot.renderComponent->Reset();
-		newDot.renderComponent->SetStartPos(newDot.physicsComponent->GetPosition());
+		newDot.GetRenderComponent()->SetStartPos(newDot.GetPosition());
 	}
-	return 1;
+	return 0;
 }
 
 void Game::Render(float deltaTime){
 	for (size_t i = 0; i < renderComponents.size(); i++)
 	{
-		renderComponents[i].Render(physicsComponents[i].GetPosition(), physicsComponents[i].radius, deltaTime);
+		renderComponents[i].Render(physicsComponents[i].GetPosition(), physicsComponents[i].GetRadius(), deltaTime);
 	}
 	if(debugMode == DebugDrawMode::Quad && quadTree){
 		quadTree->DebugDraw(renderer);

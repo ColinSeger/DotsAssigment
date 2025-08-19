@@ -17,7 +17,7 @@ bool QuadTree::Insert(PhysicsComponent* newNode)
     assert(newNode && "You tried to add a non existent node to QuadTree");
     if(!treeBoundingBox.InBounds(newNode->GetPosition())) return false;
 
-    if(nodes.size() < CAPACITY && !directions[0]){
+    if(nodes.size() < CAPACITY && !directions[0] || treeBoundingBox.Area() <= 1){
         nodes.push_back(newNode);
         return true;
     }
