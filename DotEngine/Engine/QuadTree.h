@@ -46,12 +46,14 @@ public:
     }
 };
 
-const int CAPACITY = 14;
+const int CAPACITY = 32;
 class QuadTree
 {
 public:
     QuadTree();
     QuadTree(BoundingBox boundingBox);
+
+    void PreWarm(const unsigned int amount, unsigned int& depth);
 
     /*Tries to add new node, will crash if nullptr is inserted*/
     bool Insert(PhysicsComponent* newNode);
@@ -64,6 +66,7 @@ public:
     void CleanUp();
 
     void DebugDraw(DotRenderer* render){
+        if(!this) return;
         glm::vec2 topRight = {treeBoundingBox.UpperLeft().x, treeBoundingBox.BottomRight().y};
         glm::vec2 bottomLeft = {treeBoundingBox.BottomRight().x, treeBoundingBox.UpperLeft().y};
 

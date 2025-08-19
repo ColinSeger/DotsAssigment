@@ -12,28 +12,42 @@ QuadTree::QuadTree(BoundingBox boundingBox)
     nodes.reserve(CAPACITY);
 }
 
+void QuadTree::PreWarm(const unsigned int amount, unsigned int& depth)
+{
+    
+    unsigned int myDepth = amount / CAPACITY;
+    if(depth > 180) return;
+    SubDivide();
+    depth++;
+    for(auto tree : directions){
+        tree->PreWarm(myDepth, depth);
+    }
+}
+
 bool QuadTree::Insert(PhysicsComponent* newNode)
 {
     assert(newNode && "You tried to add a non existent node to QuadTree");
     if(!treeBoundingBox.InBounds(newNode->GetPosition())) return false;
 
-    if(nodes.size() < CAPACITY && !directions[0] || treeBoundingBox.Area() <= 1){
-        nodes.push_back(newNode);
-        return true;
-    }
     if(!directions[0]){
+        if(nodes.size() < CAPACITY || treeBoundingBox.Area() <= 1){
+            nodes.emplace_back(newNode);
+            return true;
+        }
         SubDivide();
     }
     for(QuadTree* tree : directions){
-        for(int i = 0; i < nodes.size(); i++){
-            if(!nodes[i]) continue;
-            if(tree->Insert(nodes[i])){
-                nodes[i] = nullptr;
-            }
+        for(unsigned int i = 0; i < nodes.size(); i++){
+            tree->Insert(nodes[i]);
+            // if(!nodes[i]) continue;
+            // if(tree->Insert(nodes[i])){
+            //     nodes[i] = nullptr;
+            // }
         }
         tree->Insert(newNode);
     }
     nodes.clear();
+    nodes.shrink_to_fit();
     return true;
 }
 
@@ -43,37 +57,37 @@ inline void QuadTree::SubDivide()
     glm::vec2 bottomRight = treeBoundingBox.BottomRight();
     // glm::vec2 newTopLeft = topLeft;
     // glm::vec2 newBottomRight = bottomRight;
-    // BoundingBox newBox;
-    {// Top Left
+    BoundingBox newBox;
+    // Top Left
         bottomRight.x = (topLeft.x + bottomRight.x) / 2;
         bottomRight.y = (topLeft.y + bottomRight.y) / 2;
-        BoundingBox newBox = BoundingBox(topLeft, bottomRight);
+        newBox = BoundingBox(topLeft, bottomRight);
         directions[0] = new QuadTree(newBox);
-    }
-    {// Bottom Left
+    
+    // Bottom Left
         topLeft = treeBoundingBox.UpperLeft();
         bottomRight = treeBoundingBox.BottomRight();
         topLeft.y = (topLeft.y + bottomRight.y) / 2;
         bottomRight.x = (topLeft.x + bottomRight.x) / 2;
-        BoundingBox newBox = BoundingBox(topLeft, bottomRight);
+        newBox = BoundingBox(topLeft, bottomRight);
         directions[1] = new QuadTree(newBox);
-    }
-    {// Top Right
+    
+    // Top Right
         topLeft = treeBoundingBox.UpperLeft();
         bottomRight = treeBoundingBox.BottomRight();
         topLeft.x = (topLeft.x + bottomRight.x) / 2;
         bottomRight.y = (topLeft.y + bottomRight.y) / 2;
-        BoundingBox newBox = BoundingBox(topLeft, bottomRight);
+        newBox = BoundingBox(topLeft, bottomRight);
         directions[2] = new QuadTree(newBox);
-    }
-    {// Bottom Right
+    
+    // Bottom Right
         topLeft = treeBoundingBox.UpperLeft();
         bottomRight = treeBoundingBox.BottomRight();
         topLeft.x = (topLeft.x + bottomRight.x) / 2;
         topLeft.y = (topLeft.y + bottomRight.y) / 2;
-        BoundingBox newBox = BoundingBox(topLeft, bottomRight);
+        newBox = BoundingBox(topLeft, bottomRight);
         directions[3] = new QuadTree(newBox);
-    }
+    
 }
 
 void QuadTree::Search(std::vector<PhysicsComponent*>& result, glm::vec2 position)

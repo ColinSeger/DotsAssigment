@@ -30,10 +30,10 @@ private:
     void FpsCounter(double fps);
     void DebugText(std::string text, int offset, double fps);
 
-    DotRenderer* renderer;
-    Game* gameManager;
-    TTF_Font* font;
+    DotRenderer* renderer = nullptr;
+    Game* gameManager = nullptr;
+    TTF_Font* font = nullptr;
 
-    double deltaTime;
+    double deltaTime = 0;
 };
 
