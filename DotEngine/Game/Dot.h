@@ -12,15 +12,15 @@ public:
 	void Update(float deltaTime) override;
 	void Render(DotRenderer* render, float deltaTime) override;
 	void TakeDamage(int someDamage);
-	int health;
+	const int GetHealth(){ return m_health; }
 
 	Dot operator=(const Dot& other){
 		physicsComponent->SetPosition(other.physicsComponent->GetPosition());
-		this->health = other.health;
+		this->m_health = other.m_health;
 		return *this;
 	}
 private:
 
-	
+	int m_health;
 };
 

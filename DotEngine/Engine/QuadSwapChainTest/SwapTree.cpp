@@ -34,18 +34,11 @@ QuadTree* SwapTree::Swap(){
 
 void SwapTree::Construct()
 {
-    // selection = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
-    // return;
     while (true)
     {
-        
-        
-        // continue;
         QuadTree* tree = Swap();
-        // if(ready) continue;
         
         if(lockThing.try_lock()){
-            // readyTrees.emplace(tree);
             if(selection == primary){
                 if(secondary) {
                     secondary->CleanUp();
@@ -63,7 +56,6 @@ void SwapTree::Construct()
         }else{
             tree->CleanUp();            
         }
-        // tree->CleanUp();
     }
 }
 

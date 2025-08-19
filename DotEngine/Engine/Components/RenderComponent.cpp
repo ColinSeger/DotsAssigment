@@ -19,7 +19,7 @@ void RenderComponent::Render(glm::vec2 position, float radius, double deltaTime)
 
 	int blueColor = (glm::cos(totalTime * 0.4f) * 0.5f + 0.5f) * 255.0f;
 	
-	uint32_t color = ((255 & 0xff) << 24) + ((redColor & 0xff) << 16) + ((greenColor & 0xff) << 8)
-		+ (blueColor & 0xff);
+	uint32_t color = ((255 & 0xff) << 24) + ((redColor & 0xff) << 16) + ((greenColor & 0xff) << 8) + (blueColor & 0xff);
+	
 	renderer->DrawFilledCircle(position.x, position.y, radius, color);
 }

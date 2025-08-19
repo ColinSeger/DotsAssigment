@@ -60,7 +60,8 @@ int Game::Update(float deltaTime)
 		
 		quadTree->Search(result, dotPosition);
 		for(PhysicsComponent* neighbor : result){
-			if(glm::distance(component.GetPosition(), neighbor->GetPosition()) > (component.radius + neighbor->radius)) continue;
+			if(glm::distance(component.GetPosition(), neighbor->GetPosition()) > (component.radius + neighbor->radius) 
+				|| component.GetPosition() == neighbor->GetPosition()) continue;
 			component.AddNeighbor(neighbor);
 		}
 		// component.SetNeighbors(result);
@@ -71,7 +72,7 @@ int Game::Update(float deltaTime)
 	for (Dot& dot : dots)
 	{
 		dot.Update(deltaTime);
-		if(dot.health > 0) continue;
+		if(dot.GetHealth() > 0) continue;
 		dot.physicsComponent->SetPosition({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
 		Dot newDot = Dot(3, dot.physicsComponent, dot.renderComponent);
 		dot = newDot;

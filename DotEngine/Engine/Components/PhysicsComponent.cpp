@@ -18,18 +18,7 @@ PhysicsComponent::PhysicsComponent(glm::vec2 newPosition)
 	this->velocity = glm::vec2(cos(angle), sin(angle));
 	// this->parentObject = nullptr;
 }
-// PhysicsComponent::PhysicsComponent(glm::vec2 newPosition, GameObject* parentGameObject)
-// {
-//     this->position = newPosition;
-// 	// this->parentObject = parentGameObject;
 
-//     static std::mt19937 rng(static_cast<unsigned int>(time(nullptr)));
-// 	std::uniform_real_distribution<float> dist(-100.0f, 100.0f);
-//     this->velocity = glm::vec2(dist(rng), dist(rng));
-
-// 	float angle = dist(rng) * glm::pi<float>() / 100.0f;
-// 	this->velocity = glm::vec2(cos(angle), sin(angle));
-// }
 PhysicsComponent::PhysicsComponent(glm::vec2 newPosition, glm::vec2 startingVelocity)
 {
     this->position = newPosition;
@@ -42,10 +31,10 @@ PhysicsComponent::~PhysicsComponent()
 }
 
 void PhysicsComponent::Update(float deltaTime)
-{    
+{
     for(auto& neighbor : neighbors){
         // break;
-	 	if(neighbor->GetPosition() == position) continue;
+	 	// if(neighbor->GetPosition() == position) continue;
         glm::vec2 neighborPosition = neighbor->GetPosition();
 		float dx = position.x - neighbor->GetPosition().x;
 		float dy = position.y - neighbor->GetPosition().y;
@@ -56,7 +45,7 @@ void PhysicsComponent::Update(float deltaTime)
 		glm::vec2 normal = glm::normalize(position - neighborPosition);
 
 		this->velocity = glm::reflect(velocity, normal);
-		neighbor->SetVelocity(glm::reflect(neighbor->GetVelocity(), -normal));
+		// neighbor->SetVelocity(glm::reflect(neighbor->GetVelocity(), -normal));
 		damageTaken+=1;
 		radius++;	
 	}

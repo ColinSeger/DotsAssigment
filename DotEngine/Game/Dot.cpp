@@ -5,7 +5,7 @@ Dot::Dot(float newRadius, PhysicsComponent* physics, RenderComponent* render)
 	physicsComponent->radius = newRadius;
 	renderComponent = render;
 
-	health = 3;
+	m_health = 3;
 }
 
 void Dot::Update(float deltaTime)
@@ -31,7 +31,7 @@ void Dot::Render(DotRenderer* aRenderer, float deltaTime)
 
 void Dot::TakeDamage(int someDamage)
 {
-	health -= someDamage;
+	m_health -= someDamage;
 }
 
 
