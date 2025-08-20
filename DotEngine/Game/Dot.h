@@ -16,11 +16,11 @@ public:
 	const int GetHealth(){ return m_health; }
 
 	Dot operator=(const Dot& other){
-		physicsComponent->SetPosition(other.physicsComponent->GetPosition());
+		m_physicsComponent->SetPosition(other.m_physicsComponent->GetPosition());
 		this->m_health = other.m_health;
 		this->id = other.id;
-		this->physicsComponent = other.physicsComponent;
-		this->renderComponent = other.renderComponent;
+		this->m_physicsComponent = other.m_physicsComponent;
+		this->m_renderComponent = other.m_renderComponent;
 		return *this;
 	}
 private:

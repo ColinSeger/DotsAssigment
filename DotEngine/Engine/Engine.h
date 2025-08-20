@@ -5,10 +5,6 @@
 #include <chrono>
 #include <future>
 
-// static const int SCREEN_WIDTH = 1000;
-// static const int SCREEN_HEIGHT = 800;
-// static const glm::vec2 SCREEN_CENTRE = {SCREEN_WIDTH /2, SCREEN_HEIGHT / 2};
-
 class Engine
 {
 public:
@@ -19,9 +15,9 @@ public:
 
     int StartGame();
 
-    const Game* GetGameManager(){ return gameManager; }
+    const Game* GetGameManager(){ return m_gameManager; }
 
-    DotRenderer* GetRender(){ return renderer; }
+    DotRenderer* GetRender(){ return m_renderer; }
 
 private:
 
@@ -30,10 +26,10 @@ private:
     void FpsCounter(double fps);
     void DebugText(std::string text, int offset, double fps);
 
-    DotRenderer* renderer = nullptr;
-    Game* gameManager = nullptr;
-    TTF_Font* font = nullptr;
+    DotRenderer* m_renderer = nullptr;
+    Game* m_gameManager = nullptr;
+    TTF_Font* m_font = nullptr;
 
-    double deltaTime = 0;
+    double m_deltaTime = 0;
 };
 

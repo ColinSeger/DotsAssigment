@@ -11,7 +11,7 @@ enum class DebugDrawMode : uint8_t{
     Dots,
     Both
 };
-static const DebugDrawMode debugMode = DebugDrawMode::None;
+static const DebugDrawMode debugMode = DebugDrawMode::Quad;
 
 const float DOT_SIZE = 3;
 

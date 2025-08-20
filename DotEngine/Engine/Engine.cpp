@@ -3,13 +3,13 @@
 
 Engine::Engine()
 {
-    renderer = new DotRenderer();
-    if(renderer){
-        renderer->Init();
-        gameManager = new Game(renderer);       
+    m_renderer = new DotRenderer();
+    if(m_renderer){
+        m_renderer->Init();
+        m_gameManager = new Game(m_renderer);       
     }
-    font = TTF_OpenFont("fonts/arial.ttf", 24);
-	if (font == nullptr)
+    m_font = TTF_OpenFont("fonts/arial.ttf", 24);
+	if (m_font == nullptr)
 	{
 		const char* err = SDL_GetError();
 		TTF_Quit();
@@ -20,13 +20,13 @@ Engine::Engine()
 
 Engine::~Engine()
 {
-    if(gameManager){
-        delete gameManager;
+    if(m_gameManager){
+        delete m_gameManager;
     }
-    if(renderer){
-        delete renderer;
+    if(m_renderer){
+        delete m_renderer;
     }
-    TTF_CloseFont(font);
+    TTF_CloseFont(m_font);
 
     TTF_Quit();
 	SDL_Quit();
@@ -34,7 +34,7 @@ Engine::~Engine()
 
 int Engine::Validate()
 {
-    if(!gameManager || !renderer){
+    if(!m_gameManager || !m_renderer){
         return 1;
     }
     return 0;
@@ -53,7 +53,7 @@ void Engine::Tick()
 
 	Uint64 lastTick = SDL_GetPerformanceCounter();
 	Uint64 currentTick;
-	deltaTime = 0;
+	m_deltaTime = 0;
 	double fps = 0;
 	int frameCount = 0;
 	double fpsAccumulator = 0.0;
@@ -69,11 +69,11 @@ void Engine::Tick()
 			}
 		}
 		currentTick = SDL_GetPerformanceCounter();
-		deltaTime = (double)(currentTick - lastTick) / SDL_GetPerformanceFrequency();
+		m_deltaTime = (double)(currentTick - lastTick) / SDL_GetPerformanceFrequency();
 		lastTick = currentTick;
 
 		frameCount++;
-		fpsAccumulator += deltaTime;
+		fpsAccumulator += m_deltaTime;
 
 		if (fpsAccumulator >= FPS_UPDATE_INTERVAL)
 		{
@@ -86,11 +86,11 @@ void Engine::Tick()
         std::future<void> tick = std::async(&Engine::PhysicsTick, this);
         // PhysicsTick();
         auto renderTimeBefore = std::chrono::high_resolution_clock::now();
-        renderer->SetDrawColor(0x00, 0x00, 0x00, 0xFF); 
-		renderer->Clear();
+        m_renderer->SetDrawColor(0x00, 0x00, 0x00, 0xFF); 
+		m_renderer->Clear();
         
-        gameManager->Render(deltaTime);
-        renderer->RenderDots();
+        m_gameManager->Render(m_deltaTime);
+        m_renderer->RenderDots();
         auto renderTimeAfter = std::chrono::high_resolution_clock::now();
 
         std::chrono::duration<double, std::milli> renderTime = renderTimeAfter - renderTimeBefore ;
@@ -103,9 +103,9 @@ void Engine::Tick()
         std::chrono::duration<double, std::milli> physicsTime = afterTime - beforeTime;
         double physTime = physicsTime.count() - renderTime.count();
         DebugText("physics time ms: ", 60, physTime);
-		renderer->Present();
+		m_renderer->Present();
         
-        gameManager->CleanUp();
+        m_gameManager->CleanUp();
 	}
 }
 
@@ -113,7 +113,7 @@ void Engine::PhysicsTick()
 {
     while (true)
     {
-        if(0 == gameManager->Update(deltaTime)) return;
+        if(0 == m_gameManager->Update(m_deltaTime)) return;
     }
 }
 
@@ -121,14 +121,14 @@ void Engine::FpsCounter(double fps)
 {
     // - FPS COUNTER -
     std::string fpsText = "FPS: " + std::to_string(static_cast<int>(fps));
-    SDL_Surface* textSurface = TTF_RenderText_Solid(font, fpsText.c_str(), 0, { 255, 255, 255, 255 }); 
+    SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, fpsText.c_str(), 0, { 255, 255, 255, 255 }); 
     if (textSurface != nullptr)
     {
-        SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer->GetSDLRenderer(), textSurface);
+        SDL_Texture* textTexture = SDL_CreateTextureFromSurface(m_renderer->GetSDLRenderer(), textSurface);
         if (textTexture != nullptr)
         {
             SDL_FRect renderQuad = { 0, 0, (float)textSurface->w, (float)textSurface->h }; 
-            renderer->RenderTexture(textTexture, nullptr, &renderQuad);
+            m_renderer->RenderTexture(textTexture, nullptr, &renderQuad);
             SDL_DestroyTexture(textTexture);
         }
         SDL_DestroySurface(textSurface);
@@ -140,14 +140,14 @@ void Engine::DebugText(std::string text, int offset, double value)
 {
     // - FPS COUNTER -
     std::string fpsText = text + std::to_string(static_cast<int>(value));
-    SDL_Surface* textSurface = TTF_RenderText_Solid(font, fpsText.c_str(), 0, { 255, 255, 255, 255 }); 
+    SDL_Surface* textSurface = TTF_RenderText_Solid(m_font, fpsText.c_str(), 0, { 255, 255, 255, 255 }); 
     if (textSurface != nullptr)
     {
-        SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer->GetSDLRenderer(), textSurface);
+        SDL_Texture* textTexture = SDL_CreateTextureFromSurface(m_renderer->GetSDLRenderer(), textSurface);
         if (textTexture != nullptr)
         {
             SDL_FRect renderQuad = { 0, offset, (float)textSurface->w, (float)textSurface->h }; 
-            renderer->RenderTexture(textTexture, nullptr, &renderQuad);
+            m_renderer->RenderTexture(textTexture, nullptr, &renderQuad);
             SDL_DestroyTexture(textTexture);
         }
         SDL_DestroySurface(textSurface);

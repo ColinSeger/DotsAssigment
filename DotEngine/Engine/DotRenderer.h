@@ -41,14 +41,14 @@ public:
 		SDL_RenderLine(m_sdlRenderer, point1.x, point1.y, point2.x, point2.y);
 	}
     DotRenderer operator=(const DotRenderer& newRender){
-        this->gameWindow = newRender.gameWindow;
+        this->m_gameWindow = newRender.m_gameWindow;
         this->m_sdlRenderer = newRender.m_sdlRenderer;
     }
 private:
-    SDL_Window* gameWindow;
+    SDL_Window* m_gameWindow;
     SDL_Renderer* m_sdlRenderer;
-    SDL_Texture* bufferTexture;
-    std::vector<uint32_t> pixelBuffer;
+    SDL_Texture* m_bufferTexture;
+    std::vector<uint32_t> m_pixelBuffer;
     
 
     void DrawPoint(int x, int y);

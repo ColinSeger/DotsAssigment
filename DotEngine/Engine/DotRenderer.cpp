@@ -18,9 +18,9 @@ DotRenderer::~DotRenderer()
 		SDL_DestroyRenderer(m_sdlRenderer);
 		m_sdlRenderer = nullptr;
 	}
-	if(gameWindow){
-		SDL_DestroyWindow(gameWindow);
-		gameWindow = nullptr;		
+	if(m_gameWindow){
+		SDL_DestroyWindow(m_gameWindow);
+		m_gameWindow = nullptr;		
 	}
 }
 int DotRenderer::Init()
@@ -41,7 +41,7 @@ int DotRenderer::Init()
 
 	if (!m_sdlRenderer)
 	{
-		SDL_DestroyWindow(gameWindow);
+		SDL_DestroyWindow(m_gameWindow);
 		TTF_Quit();
 		SDL_Quit();
 		delete this;
@@ -50,8 +50,8 @@ int DotRenderer::Init()
 
 	// SetDrawColor(0x00, 0x00, 0x00, 0xFF);
 
-	pixelBuffer.resize(SCREEN_WIDTH * SCREEN_HEIGHT, 0);
-	bufferTexture = SDL_CreateTexture
+	m_pixelBuffer.resize(SCREEN_WIDTH * SCREEN_HEIGHT, 0);
+	m_bufferTexture = SDL_CreateTexture
 	(
 		m_sdlRenderer, 
 		SDL_PIXELFORMAT_ARGB8888,
@@ -67,7 +67,7 @@ void DotRenderer::SetDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 
 void DotRenderer::Clear()
 {
-	std::fill(pixelBuffer.begin(), pixelBuffer.end(), 0);
+	std::fill(m_pixelBuffer.begin(), m_pixelBuffer.end(), 0);
 	SDL_RenderClear(m_sdlRenderer);
 }
 
@@ -77,8 +77,8 @@ void DotRenderer::Present()
 }
 void DotRenderer::RenderDots()
 {
-	SDL_UpdateTexture(bufferTexture, NULL, pixelBuffer.data(), SCREEN_WIDTH * sizeof(uint32_t));
-	RenderTexture(bufferTexture, NULL, NULL);
+	SDL_UpdateTexture(m_bufferTexture, NULL, m_pixelBuffer.data(), SCREEN_WIDTH * sizeof(uint32_t));
+	RenderTexture(m_bufferTexture, NULL, NULL);
 }
 
 void DotRenderer::DrawPoint(int x, int y)
@@ -133,7 +133,7 @@ void DotRenderer::DrawFilledCircle(int centerX, int centerY, int radius, uint32_
 			if(dx * dx + dy * dy <= radius * radius){
 				int index = y * SCREEN_WIDTH + x;
 
-				pixelBuffer[index] = color;
+				m_pixelBuffer[index] = color;
 			}
 		}
 	}

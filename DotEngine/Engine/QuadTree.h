@@ -67,29 +67,29 @@ public:
 
     void DebugDraw(DotRenderer* render){
         if(!this) return;
-        glm::vec2 topRight = {treeBoundingBox.UpperLeft().x, treeBoundingBox.BottomRight().y};
-        glm::vec2 bottomLeft = {treeBoundingBox.BottomRight().x, treeBoundingBox.UpperLeft().y};
+        glm::vec2 topRight = {m_treeBoundingBox.UpperLeft().x, m_treeBoundingBox.BottomRight().y};
+        glm::vec2 bottomLeft = {m_treeBoundingBox.BottomRight().x, m_treeBoundingBox.UpperLeft().y};
 
-        render->DrawLineBetweenPoints(treeBoundingBox.UpperLeft(), topRight);
-        render->DrawLineBetweenPoints(treeBoundingBox.UpperLeft(), bottomLeft);
-        render->DrawLineBetweenPoints(treeBoundingBox.BottomRight(), topRight);
-        render->DrawLineBetweenPoints(treeBoundingBox.BottomRight(), bottomLeft);
-        for(QuadTree* tree : directions){
+        render->DrawLineBetweenPoints(m_treeBoundingBox.UpperLeft(), topRight);
+        render->DrawLineBetweenPoints(m_treeBoundingBox.UpperLeft(), bottomLeft);
+        render->DrawLineBetweenPoints(m_treeBoundingBox.BottomRight(), topRight);
+        render->DrawLineBetweenPoints(m_treeBoundingBox.BottomRight(), bottomLeft);
+        for(QuadTree* tree : m_directions){
             if(!tree) continue;
             tree->DebugDraw(render);
         }
     }
 
     BoundingBox& GetBounds(){
-        return treeBoundingBox;
+        return m_treeBoundingBox;
     }
 
 private:
-    std::array<QuadTree*, 4> directions = {nullptr, nullptr, nullptr, nullptr};
+    std::array<QuadTree*, 4> m_directions = {nullptr, nullptr, nullptr, nullptr};
     
-    std::vector<PhysicsComponent*> nodes;
+    std::vector<PhysicsComponent*> m_nodes;
     
-    BoundingBox treeBoundingBox;
+    BoundingBox m_treeBoundingBox;
 
     constexpr void ClearNodes();
     constexpr void AddNode(PhysicsComponent* node);

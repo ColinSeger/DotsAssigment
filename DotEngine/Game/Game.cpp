@@ -1,34 +1,33 @@
 #include "../Game/Game.h"
 
 
-Game::Game(DotRenderer* aRenderer)
+Game::Game(DotRenderer* newRenderer)
 {
-	renderer = aRenderer;
-	collideAmount.resize(DOT_AMOUNT);
-	physicsComponents.reserve(DOT_AMOUNT);
-	renderComponents.reserve(DOT_AMOUNT);
+	m_renderer = newRenderer;
+	m_physicsComponents.reserve(DOT_AMOUNT);
+	m_renderComponents.reserve(DOT_AMOUNT);
 	
 	for (size_t i = 0; i < DOT_AMOUNT; i++)
 	{
 		PhysicsComponent physics = PhysicsComponent({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
-		physicsComponents.push_back(physics);
-		RenderComponent renderComp = RenderComponent(renderer);
+		m_physicsComponents.push_back(physics);
+		RenderComponent renderComp = RenderComponent(m_renderer);
 		renderComp.SetStartPos(physics.GetPosition());
-		renderComponents.push_back(renderComp);
+		m_renderComponents.push_back(renderComp);
 		
 		// physics.SetPosition();
-		Dot dot = Dot(i , DOT_SIZE, &physicsComponents[i], &renderComponents[i]);
+		Dot dot = Dot(i , DOT_SIZE, &m_physicsComponents[i], &m_renderComponents[i]);
 		// dot.renderComponent = &renderComp;
 		// dot.physicsComponent->SetBound(SCREEN_WIDTH, SCREEN_HEIGHT);
-		dots.push_back(dot);
+		m_dots.push_back(dot);
 		
 	}
 	std::vector<PhysicsComponent*> componentReference;
-	for (size_t i = 0; i < physicsComponents.size(); i++)
+	for (size_t i = 0; i < m_physicsComponents.size(); i++)
 	{
-		componentReference.push_back(&physicsComponents[i]);
+		componentReference.push_back(&m_physicsComponents[i]);
 	}
-	swapTree = new SwapTree(componentReference);
+	m_swapTree = new SwapTree(componentReference);
 	//To debug collision
 	// dots[0].overriden = true;
 	// dots[0].radius = 10;
@@ -42,8 +41,8 @@ void Game::Init()
 
 int Game::Update(float deltaTime)
 {
-	quadTree = swapTree->GetQuadTree();
-	if(!quadTree) {
+	m_quadTree = m_swapTree->GetQuadTree();
+	if(!m_quadTree) {
 		return 1;
 	}
 	// return 0;
@@ -54,11 +53,11 @@ int Game::Update(float deltaTime)
 	// }
 	//Slightly reducing reallocation by having result here
 	std::vector<PhysicsComponent*> result;
-	for (PhysicsComponent& component : physicsComponents)
+	for (PhysicsComponent& component : m_physicsComponents)
 	{
 		glm::vec2 dotPosition = component.GetPosition();
 		
-		quadTree->Search(result, dotPosition);
+		m_quadTree->Search(result, dotPosition);
 		for(PhysicsComponent* neighbor : result){
 			if(glm::distance(component.GetPosition(), neighbor->GetPosition()) > (component.GetRadius() + neighbor->GetRadius())) continue;
 			component.AddNeighbor(neighbor);
@@ -66,12 +65,12 @@ int Game::Update(float deltaTime)
 		result.clear();
 	}
 	
-	for (Dot& dot : dots)
+	for (Dot& dot : m_dots)
 	{
 		dot.Update(deltaTime);
 		if(dot.GetHealth() > 0) continue;
 		dot.SetPosition({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
-		Dot newDot = Dot(dot.GetId(), DOT_SIZE, &physicsComponents[dot.GetId()], &renderComponents[dot.GetId()]);
+		Dot newDot = Dot(dot.GetId(), DOT_SIZE, &m_physicsComponents[dot.GetId()], &m_renderComponents[dot.GetId()]);
 		dot = newDot;
 		newDot.GetRenderComponent()->SetStartPos(newDot.GetPosition());
 	}
@@ -79,16 +78,16 @@ int Game::Update(float deltaTime)
 }
 
 void Game::Render(float deltaTime){
-	for (size_t i = 0; i < renderComponents.size(); i++)
+	for (size_t i = 0; i < m_renderComponents.size(); i++)
 	{
-		renderComponents[i].Render(physicsComponents[i].GetPosition(), physicsComponents[i].GetRadius(), deltaTime);
+		m_renderComponents[i].Render(m_physicsComponents[i].GetPosition(), m_physicsComponents[i].GetRadius(), deltaTime);
 	}
-	if(debugMode == DebugDrawMode::Quad && quadTree){
-		quadTree->DebugDraw(renderer);
+	if(debugMode == DebugDrawMode::Quad && m_quadTree){
+		m_quadTree->DebugDraw(m_renderer);
 	}
-	if(debugMode == DebugDrawMode::Both && quadTree){
-		quadTree->DebugDraw(renderer);
-		for (size_t i = 0; i < physicsComponents.size(); i++)
+	if(debugMode == DebugDrawMode::Both && m_quadTree){
+		m_quadTree->DebugDraw(m_renderer);
+		for (size_t i = 0; i < m_physicsComponents.size(); i++)
 		{
 			// auto neighbors = physicsComponents[i].GetNeighbors();
 			// for (int n = 0; 0 < neighbors.size(); n++)
@@ -103,7 +102,7 @@ void Game::Render(float deltaTime){
 
 void Game::CleanUp()
 {
-	if(quadTree){
-	 	quadTree->CleanUp();
+	if(m_quadTree){
+	 	m_quadTree->CleanUp();
 	}
 }

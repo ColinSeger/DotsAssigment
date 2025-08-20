@@ -25,20 +25,19 @@ public:
 
 	void CleanUp();
 
-	float GetTime(){return currentTime;}
+	float GetTime(){return m_currentTime;}
 private:
-	const unsigned int DOT_AMOUNT = 45000;	
+	const unsigned int DOT_AMOUNT = 10000;	
 
-	DotRenderer* renderer = nullptr;
-	QuadTree* quadTree = nullptr;
-	SwapTree* swapTree = nullptr;
+	DotRenderer* m_renderer = nullptr;
+	QuadTree* m_quadTree = nullptr;
+	SwapTree* m_swapTree = nullptr;
 	
-	std::vector<Dot> dots;
-	std::vector<PhysicsComponent> physicsComponents;
-	std::vector<RenderComponent> renderComponents;
-	std::vector<int> collideAmount;
+	std::vector<Dot> m_dots;
+	std::vector<PhysicsComponent> m_physicsComponents;
+	std::vector<RenderComponent> m_renderComponents;
 
-	float currentTime = 0;
+	float m_currentTime = 0;
 
 };
 
