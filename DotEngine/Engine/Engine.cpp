@@ -83,26 +83,21 @@ void Engine::Tick()
 		}
         
         auto beforeTime = std::chrono::high_resolution_clock::now();
-        std::future<void> tick = std::async(&Engine::PhysicsTick, this);
-        // PhysicsTick();
+        std::future<void> physicsTick = std::async(&Engine::PhysicsTick, this);
+
         auto renderTimeBefore = std::chrono::high_resolution_clock::now();
-        m_renderer->SetDrawColor(0x00, 0x00, 0x00, 0xFF); 
-		m_renderer->Clear();
+        std::future<void> renderTick = std::async(&Engine::RenderTick, this);
         
-        m_gameManager->Render(m_deltaTime);
-        m_renderer->RenderDots();
-        auto renderTimeAfter = std::chrono::high_resolution_clock::now();
-
-        std::chrono::duration<double, std::milli> renderTime = renderTimeAfter - renderTimeBefore ;
-
-        DebugText("render time ms: ", 30, renderTime.count());
-        
-        tick.get();
-        FpsCounter(fps);
+        physicsTick.get();
         auto afterTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double, std::milli> physicsTime = afterTime - beforeTime;
-        double physTime = physicsTime.count() - renderTime.count();
-        DebugText("physics time ms: ", 60, physTime);
+        
+        renderTick.get();
+        auto renderTimeAfter = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double, std::milli> renderTime = renderTimeAfter - renderTimeBefore ;
+        FpsCounter(fps);
+        DebugText("physics time ms: ", 60, physicsTime.count());
+        DebugText("render time ms: ", 30, (renderTime.count() - physicsTime.count()));
 		m_renderer->Present();
         
         m_gameManager->CleanUp();
@@ -115,6 +110,12 @@ void Engine::PhysicsTick()
     {
         if(0 == m_gameManager->Update(m_deltaTime)) return;
     }
+}
+void Engine::RenderTick()
+{ 
+    m_renderer->Clear();
+    m_gameManager->Render(m_deltaTime);
+    m_renderer->RenderDots();
 }
 
 void Engine::FpsCounter(double fps)

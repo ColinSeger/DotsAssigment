@@ -23,6 +23,7 @@ private:
 
     void Tick();
     void PhysicsTick();
+    void RenderTick();
     void FpsCounter(double fps);
     void DebugText(std::string text, int offset, double fps);
 

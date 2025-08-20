@@ -39,10 +39,6 @@ bool QuadTree::Insert(PhysicsComponent* newNode)
     for(QuadTree* tree : m_directions){
         for(size_t i = 0; i < m_nodes.size(); i++){
             tree->Insert(m_nodes[i]);
-            // if(!nodes[i]) continue;
-            // if(tree->Insert(nodes[i])){
-            //     nodes[i] = nullptr;
-            // }
         }
         tree->Insert(newNode);
     }

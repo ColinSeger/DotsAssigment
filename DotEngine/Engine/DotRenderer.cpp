@@ -47,7 +47,7 @@ int DotRenderer::Init()
 		delete this;
 		return 1;
 	}
-
+	SetDrawColor(0x00, 0x00, 0x00, 0xFF); 
 	m_pixelBuffer.resize(SCREEN_WIDTH * SCREEN_HEIGHT, 0);
 	m_bufferTexture = SDL_CreateTexture
 	(
@@ -65,6 +65,7 @@ void DotRenderer::SetDrawColor(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
 
 void DotRenderer::Clear()
 {
+	SetDrawColor(0x00, 0x00, 0x00, 0xFF);
 	std::fill(m_pixelBuffer.begin(), m_pixelBuffer.end(), 0);
 	SDL_RenderClear(m_sdlRenderer);
 }
@@ -118,6 +119,7 @@ void DotRenderer::DrawCircle(int centerX, int centerY, int radius)
 
 void DotRenderer::DrawFilledCircle(const int centerX, const int centerY,const float radius,const uint32_t color)
 {
+	assert(m_sdlRenderer);
 	int minX = std::max(0.f, centerX - radius);
 	int maxX = std::min((float)SCREEN_WIDTH -1, centerX + radius);
 	int minY = std::max(0.f, centerY - radius);
