@@ -9,29 +9,26 @@ Game::Game(DotRenderer* newRenderer)
 	
 	for (size_t i = 0; i < DOT_AMOUNT; i++)
 	{
+		//Setup for dot physics
 		PhysicsComponent physics = PhysicsComponent({ std::rand() % SCREEN_WIDTH, std::rand() % SCREEN_HEIGHT });
-		m_physicsComponents.push_back(physics);
+		m_physicsComponents.emplace_back(physics);
+		
+		//Setup for dot rendering
 		RenderComponent renderComp = RenderComponent(m_renderer);
 		renderComp.SetStartPos(physics.GetPosition());
-		m_renderComponents.push_back(renderComp);
-		
-		// physics.SetPosition();
-		Dot dot = Dot(i , DOT_SIZE, &m_physicsComponents[i], &m_renderComponents[i]);
-		// dot.renderComponent = &renderComp;
-		// dot.physicsComponent->SetBound(SCREEN_WIDTH, SCREEN_HEIGHT);
-		m_dots.push_back(dot);
-		
+		m_renderComponents.emplace_back(renderComp);
+
+		//Placing dot in vector
+		m_dots.emplace_back(i , DOT_SIZE, &m_physicsComponents[i], &m_renderComponents[i]);
 	}
+
+	//Init the SwapTree
 	std::vector<PhysicsComponent*> componentReference;
 	for (size_t i = 0; i < m_physicsComponents.size(); i++)
 	{
 		componentReference.push_back(&m_physicsComponents[i]);
 	}
 	m_swapTree = new SwapTree(componentReference);
-	//To debug collision
-	// dots[0].overriden = true;
-	// dots[0].radius = 10;
-	//To debug collision
 }
 
 void Game::Init()
@@ -45,12 +42,16 @@ int Game::Update(float deltaTime)
 	if(!m_quadTree) {
 		return 1;
 	}
-	// return 0;
-	// quadTree = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
-	// for (PhysicsComponent& component : physicsComponents)
-	// {
-	// 	quadTree->Insert(&component);
-	// }
+	/*
+	return 0;
+	
+	m_quadTree = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
+	for (PhysicsComponent& component : m_physicsComponents)
+	{
+		m_quadTree->Insert(&component);
+	}
+	*/
+
 	//Slightly reducing reallocation by having result here
 	std::vector<PhysicsComponent*> result;
 	for (PhysicsComponent& component : m_physicsComponents)

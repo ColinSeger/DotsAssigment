@@ -10,20 +10,20 @@ public:
 
 	Dot(unsigned int newID, float radius, PhysicsComponent* physics, RenderComponent* renderComponent);
 	void Update(float deltaTime) override;
-	void TakeDamage(const int someDamage);
+	void TakeDamage(const int8_t someDamage);
 
 	/*Returns the amount of health on this dot*/
 	const int GetHealth(){ return m_health; }
 
 	Dot operator=(const Dot& other){
-		m_physicsComponent->SetPosition(other.m_physicsComponent->GetPosition());
+		physicsComponent->SetPosition(other.physicsComponent->GetPosition());
 		this->m_health = other.m_health;
 		this->id = other.id;
-		this->m_physicsComponent = other.m_physicsComponent;
-		this->m_renderComponent = other.m_renderComponent;
+		this->physicsComponent = other.physicsComponent;
+		this->renderComponent = other.renderComponent;
 		return *this;
 	}
 private:
-	int m_health = 0;
+	int8_t m_health = 0;
 };
 

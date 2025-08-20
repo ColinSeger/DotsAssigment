@@ -19,9 +19,7 @@ public:
 
     ~DotRenderer();
     
-    
     int Init();
-
 
     SDL_Renderer* GetSDLRenderer() const { return m_sdlRenderer; }
 
@@ -30,7 +28,7 @@ public:
     void Present();
 
     void DrawCircle(int centerX, int centerY, int radius);
-    void DrawFilledCircle(int centerX, int centerY, int radius, uint32_t color);
+    void DrawFilledCircle(const int centerX, const int centerY,const float radius,const uint32_t color);
 
     /*Test on description*/
     void RenderDots();

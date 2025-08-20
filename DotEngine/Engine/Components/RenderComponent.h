@@ -8,11 +8,11 @@ public:
     RenderComponent(DotRenderer* render);
     ~RenderComponent();
 
-    void Render(glm::vec2 position, float radius, double deltaTime);
-    const void SetStartPos(glm::vec2 newStartPos){ startPos = newStartPos;}
-    const void Reset(){ totalTime = 0; }
+    void Render(const glm::vec2 position, const float radius, const double deltaTime);
+    const void SetStartPos(glm::vec2 newStartPos){ m_startPosition = newStartPos;}
+    const void Reset(){ m_lifetime = 0; }
 private:
-    float totalTime;
-    glm::vec2 startPos;
-    DotRenderer* renderer;
+    float m_lifetime;
+    glm::vec2 m_startPosition;
+    DotRenderer* m_renderPointer;
 };

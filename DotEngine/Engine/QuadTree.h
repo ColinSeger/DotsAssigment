@@ -46,7 +46,7 @@ public:
     }
 };
 
-const int CAPACITY = 32;
+const uint8_t CAPACITY = 32;
 class QuadTree
 {
 public:

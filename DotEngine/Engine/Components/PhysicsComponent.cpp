@@ -30,9 +30,9 @@ PhysicsComponent::~PhysicsComponent()
 {
 }
 
-uint8_t PhysicsComponent::Update(float deltaTime)
+int8_t PhysicsComponent::Update(float deltaTime)
 {
-	uint8_t result = 0;
+	int8_t result = 0;
     for(auto& neighbor : m_neighbors){
 		glm::vec2 neighborPosition = neighbor->GetPosition();
 	 	if(neighborPosition == m_position) continue;

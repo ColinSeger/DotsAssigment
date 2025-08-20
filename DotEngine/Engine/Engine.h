@@ -15,9 +15,9 @@ public:
 
     int StartGame();
 
-    const Game* GetGameManager(){ return m_gameManager; }
+    Game* GetGameManager() const { return m_gameManager; }
 
-    DotRenderer* GetRender(){ return m_renderer; }
+    DotRenderer* GetRender() const { return m_renderer; }
 
 private:
 

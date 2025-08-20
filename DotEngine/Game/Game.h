@@ -27,8 +27,6 @@ public:
 
 	float GetTime(){return m_currentTime;}
 private:
-	const unsigned int DOT_AMOUNT = 10000;	
-
 	DotRenderer* m_renderer = nullptr;
 	QuadTree* m_quadTree = nullptr;
 	SwapTree* m_swapTree = nullptr;

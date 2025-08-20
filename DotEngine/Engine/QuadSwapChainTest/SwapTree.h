@@ -21,10 +21,9 @@ public:
     
 private:
     std::future<void> compute;
-    QuadTree* returnValue;
-    QuadTree* selection;
-    QuadTree* primary;
-    QuadTree* secondary;
-    std::mutex lockThing;
-    std::vector<PhysicsComponent*> components;
+    QuadTree* m_selection;
+    QuadTree* m_primary;
+    QuadTree* m_secondary;
+    std::mutex m_lockThing;
+    std::vector<PhysicsComponent*> m_componentPointers;
 };

@@ -13,6 +13,8 @@ enum class DebugDrawMode : uint8_t{
 };
 static const DebugDrawMode debugMode = DebugDrawMode::Quad;
 
+const unsigned int DOT_AMOUNT = 10000;	
+
 const float DOT_SIZE = 3;
 
 const float DOT_VELOCITY = 50.0f;

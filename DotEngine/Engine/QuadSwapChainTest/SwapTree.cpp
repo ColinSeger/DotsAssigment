@@ -2,7 +2,7 @@
 
 SwapTree::SwapTree(std::vector<PhysicsComponent*> componentContainer)
 {
-    components = componentContainer;
+    m_componentPointers = componentContainer;
     // primary = new QuadTree(BoundingBox({ 0, 0 }, { (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT }));
     // for (PhysicsComponent* component : components)
     // {
@@ -27,7 +27,7 @@ QuadTree* SwapTree::Swap(){
     QuadTree* quad = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
     unsigned int test = 0;
     // quad->PreWarm(components.size(), test);
-    for (PhysicsComponent* component : components)
+    for (PhysicsComponent* component : m_componentPointers)
     {
         quad->Insert(component);
     }
@@ -40,21 +40,21 @@ void SwapTree::Construct()
     {
         QuadTree* tree = Swap();
         
-        if(lockThing.try_lock()){
-            if(selection == primary){
-                if(secondary) {
-                    secondary->CleanUp();
+        if(m_lockThing.try_lock()){
+            if(m_selection == m_primary){
+                if(m_secondary) {
+                    m_secondary->CleanUp();
                 }
-                secondary = tree;
-                selection = secondary;
+                m_secondary = tree;
+                m_selection = m_secondary;
             }else{
-                if(primary){
-                    primary->CleanUp();
+                if(m_primary){
+                    m_primary->CleanUp();
                 } 
-                primary = tree;
-                selection = primary;
+                m_primary = tree;
+                m_selection = m_primary;
             }
-            lockThing.unlock();
+            m_lockThing.unlock();
         }else{
             tree->CleanUp();            
         }
@@ -63,14 +63,15 @@ void SwapTree::Construct()
 
 QuadTree* SwapTree::GetQuadTree()
 {
-    lockThing.lock();
-    if(selection == primary){
-        returnValue = primary;
-        primary = nullptr;
+    m_lockThing.lock();
+    QuadTree* returnValue = nullptr;
+    if(m_selection == m_primary){
+        returnValue = m_primary;
+        m_primary = nullptr;
     }else{
-        returnValue = secondary;
-        secondary = nullptr;
+        returnValue = m_secondary;
+        m_secondary = nullptr;
     }
-    lockThing.unlock();
+    m_lockThing.unlock();
     return returnValue;
 }
