@@ -89,18 +89,17 @@ inline void QuadTree::SubDivide()
 const void QuadTree::Search(std::vector<PhysicsComponent*>& result, const glm::vec2 position)
 {
     constexpr float range = 5;
-    if(!InRange(position, range)){
-        return;
-    }
+    // if(!InRange(position, range)){
+    //     return;
+    // }
     if(m_nodes.size() > 0 || !m_directions[0]){
         result.insert(result.end(), m_nodes.begin(), m_nodes.end());
         return;
     }
     for(QuadTree* tree : m_directions){
-        // if(!tree->InRange(position, range)) continue;
+        if(!tree->InRange(position, range)) continue;
         tree->Search(result, position);
     }
-    return;
 }
 
 constexpr bool QuadTree::InRange(const glm::vec2 position, const float range)

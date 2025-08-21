@@ -7,14 +7,11 @@
 class BoundingBox
 {
 public:
-    glm::vec2 upperLeft;
-    glm::vec2 bottomRight;
+    glm::vec2 upperLeft = {0, 0};
+    glm::vec2 bottomRight = {0, 0};
 
-    BoundingBox(){
-        upperLeft = {0, 0};
-        bottomRight = {0, 0};
-    }
-    BoundingBox(glm::vec2 newLeft, glm::vec2 newRight){
+    BoundingBox(){}
+    BoundingBox(const glm::vec2 newLeft,const glm::vec2 newRight){
         upperLeft = newLeft;
         bottomRight = newRight;
     }
@@ -22,7 +19,7 @@ public:
     constexpr bool InBounds(float xPos, float yPos){
         return InBounds({xPos, yPos});
     }
-    constexpr bool InBounds(glm::vec2 position){
+    constexpr bool InBounds(const glm::vec2 position){
         if(position.x >= upperLeft.x && position.x <= bottomRight.x
             && position.y >= upperLeft.y && position.y <= bottomRight.y){
             return true;
@@ -31,8 +28,8 @@ public:
     }
 
     constexpr float Area(){
-        float width = bottomRight.x - upperLeft.x;
-        float height = bottomRight.y - upperLeft.y;
+        const float width = bottomRight.x - upperLeft.x;
+        const float height = bottomRight.y - upperLeft.y;
         return width * height;
     }
 
@@ -46,7 +43,7 @@ public:
     }
 };
 
-constexpr uint8_t CAPACITY = 128;
+constexpr uint8_t CAPACITY = 64;
 class QuadTree
 {
 public:
