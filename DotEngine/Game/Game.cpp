@@ -86,19 +86,19 @@ void Game::Render(float deltaTime){
 	if(debugMode == DebugDrawMode::Quad && m_quadTree){
 		m_quadTree->DebugDraw(m_renderer);
 	}
-	if(debugMode == DebugDrawMode::Both && m_quadTree){
-		m_quadTree->DebugDraw(m_renderer);
-		for (size_t i = 0; i < m_physicsComponents.size(); i++)
-		{
-			// auto neighbors = physicsComponents[i].GetNeighbors();
-			// for (int n = 0; 0 < neighbors.size(); n++)
-			// {
-			// 	renderer->DrawLineBetweenPoints(physicsComponents[i].GetPosition(), neighbors[n]->GetPosition());
-			// }
+	// if(debugMode == DebugDrawMode::Both && m_quadTree){
+	// 	m_quadTree->DebugDraw(m_renderer);
+	// 	for (size_t i = 0; i < m_physicsComponents.size(); i++)
+	// 	{
+	// 		// auto neighbors = physicsComponents[i].GetNeighbors();
+	// 		// for (int n = 0; 0 < neighbors.size(); n++)
+	// 		// {
+	// 		// 	renderer->DrawLineBetweenPoints(physicsComponents[i].GetPosition(), neighbors[n]->GetPosition());
+	// 		// }
 			
-		}
+	// 	}
 		
-	}
+	// }
 }
 
 void Game::CleanUp()

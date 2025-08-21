@@ -82,22 +82,15 @@ void Engine::Tick()
 			fpsAccumulator = 0.0;
 		}
         
-        auto beforeTime = std::chrono::high_resolution_clock::now();
+        
         std::future<void> physicsTick = std::async(&Engine::PhysicsTick, this);
-
-        auto renderTimeBefore = std::chrono::high_resolution_clock::now();
-        std::future<void> renderTick = std::async(&Engine::RenderTick, this);
+        
+        RenderTick();
         
         physicsTick.get();
-        auto afterTime = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double, std::milli> physicsTime = afterTime - beforeTime;
         
-        renderTick.get();
-        auto renderTimeAfter = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double, std::milli> renderTime = renderTimeAfter - renderTimeBefore ;
         FpsCounter(fps);
-        DebugText("physics time ms: ", 60, physicsTime.count());
-        DebugText("render time ms: ", 30, (renderTime.count() - physicsTime.count()));
+        
 		m_renderer->Present();
         
         m_gameManager->CleanUp();
@@ -106,16 +99,26 @@ void Engine::Tick()
 
 void Engine::PhysicsTick()
 {
+    auto beforeTime = std::chrono::high_resolution_clock::now();
     while (true)
     {
-        if(0 == m_gameManager->Update(m_deltaTime)) return;
+        if(0 == m_gameManager->Update(m_deltaTime)) break;
     }
+    auto afterTime = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> physicsTime = afterTime - beforeTime;
+    DebugText("physics time ms: ", 60, physicsTime.count());
 }
 void Engine::RenderTick()
 { 
+    auto renderTimeBefore = std::chrono::high_resolution_clock::now();
+
     m_renderer->Clear();
     m_gameManager->Render(m_deltaTime);
     m_renderer->RenderDots();
+
+    auto renderTimeAfter = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> renderTime = renderTimeAfter - renderTimeBefore ;
+    DebugText("render time ms: ", 30, (renderTime.count()));
 }
 
 void Engine::FpsCounter(double fps)

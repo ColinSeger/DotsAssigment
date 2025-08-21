@@ -1,9 +1,9 @@
 #pragma once
 #include "glm/glm.hpp"
 
-static const int SCREEN_WIDTH = 1920;
-static const int SCREEN_HEIGHT = 1080;
-static const glm::vec2 SCREEN_CENTRE = {SCREEN_WIDTH /2, SCREEN_HEIGHT / 2};
+constexpr uint16_t SCREEN_WIDTH = 1920;
+constexpr uint16_t SCREEN_HEIGHT = 1080;
+constexpr glm::vec2 SCREEN_CENTRE = {SCREEN_WIDTH /2, SCREEN_HEIGHT / 2};
 
 enum class DebugDrawMode : uint8_t{
     None,
@@ -11,10 +11,10 @@ enum class DebugDrawMode : uint8_t{
     Dots,
     Both
 };
-static const DebugDrawMode debugMode = DebugDrawMode::Quad;
+constexpr DebugDrawMode debugMode = DebugDrawMode::None;
 
-const unsigned int DOT_AMOUNT = 20000;	
+constexpr unsigned int DOT_AMOUNT = 45000;	
 
-const float DOT_SIZE = 3;
+constexpr float DOT_SIZE = 3;
 
-const float DOT_VELOCITY = 50.0f;
+constexpr float DOT_VELOCITY = 50.0f;

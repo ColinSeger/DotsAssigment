@@ -43,7 +43,7 @@ bool QuadTree::Insert(PhysicsComponent* newNode)
         tree->Insert(newNode);
     }
     m_nodes.clear();
-    m_nodes.shrink_to_fit();
+    // m_nodes.shrink_to_fit();
     return true;
 }
 
@@ -86,9 +86,9 @@ inline void QuadTree::SubDivide()
     
 }
 
-void QuadTree::Search(std::vector<PhysicsComponent*>& result, glm::vec2 position)
+const void QuadTree::Search(std::vector<PhysicsComponent*>& result, const glm::vec2 position)
 {
-    const float range = 5;
+    constexpr float range = 5;
     if(!InRange(position, range)){
         return;
     }
@@ -97,13 +97,13 @@ void QuadTree::Search(std::vector<PhysicsComponent*>& result, glm::vec2 position
         return;
     }
     for(QuadTree* tree : m_directions){
-        if(!tree->InRange(position, range)) continue;
+        // if(!tree->InRange(position, range)) continue;
         tree->Search(result, position);
     }
     return;
 }
 
-bool QuadTree::InRange(glm::vec2 position, float range)
+constexpr bool QuadTree::InRange(const glm::vec2 position, const float range)
 {
     //Top left
     glm::vec2 location = position - range;

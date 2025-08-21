@@ -17,7 +17,7 @@ public:
 
     void Construct();
 
-    QuadTree* Swap();
+    inline QuadTree* Swap();
     
 private:
     std::future<void> compute;

@@ -19,10 +19,10 @@ public:
         bottomRight = newRight;
     }
 
-    bool InBounds(float xPos, float yPos){
+    constexpr bool InBounds(float xPos, float yPos){
         return InBounds({xPos, yPos});
     }
-    inline bool InBounds(glm::vec2 position){
+    constexpr bool InBounds(glm::vec2 position){
         if(position.x >= upperLeft.x && position.x <= bottomRight.x
             && position.y >= upperLeft.y && position.y <= bottomRight.y){
             return true;
@@ -30,23 +30,23 @@ public:
         return false;
     }
 
-    float Area(){
+    constexpr float Area(){
         float width = bottomRight.x - upperLeft.x;
         float height = bottomRight.y - upperLeft.y;
         return width * height;
     }
 
-    const glm::vec2 UpperLeft()
+    constexpr glm::vec2 UpperLeft()
     {
         return upperLeft;
     }
-    const glm::vec2 BottomRight()
+    constexpr glm::vec2 BottomRight()
     {
         return bottomRight;
     }
 };
 
-const uint8_t CAPACITY = 14;
+constexpr uint8_t CAPACITY = 128;
 class QuadTree
 {
 public:
@@ -58,10 +58,10 @@ public:
     /*Tries to add new node, will crash if nullptr is inserted*/
     bool Insert(PhysicsComponent* newNode);
 
-    void Search(std::vector<PhysicsComponent*>& result, glm::vec2 position);
+    const void Search(std::vector<PhysicsComponent*>& result, const glm::vec2 position);
 
     /*Performs a check on bounding box to see if they are in range*/
-    bool InRange(glm::vec2 position, float range);
+    constexpr bool InRange(glm::vec2 position, float range);
 
     void CleanUp();
 
@@ -80,7 +80,7 @@ public:
         }
     }
 
-    BoundingBox& GetBounds(){
+    constexpr BoundingBox& GetBounds(){
         return m_treeBoundingBox;
     }
 

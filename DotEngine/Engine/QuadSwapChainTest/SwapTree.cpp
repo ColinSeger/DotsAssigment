@@ -23,10 +23,9 @@ void SwapTree::Start()
 {
 
 }
-QuadTree* SwapTree::Swap(){
+inline QuadTree* SwapTree::Swap(){
     QuadTree* quad = new QuadTree(BoundingBox({0, 0}, {(float)SCREEN_WIDTH, (float)SCREEN_HEIGHT}));
-    unsigned int test = 0;
-    // quad->PreWarm(components.size(), test);
+    
     for (PhysicsComponent* component : m_componentPointers)
     {
         quad->Insert(component);
