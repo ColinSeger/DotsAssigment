@@ -6,20 +6,23 @@
 #include <array>
 class BoundingBox
 {
+    const glm::vec2 upperLeft = {0, 0};
+    const glm::vec2 bottomRight = {0, 0};
 public:
-    glm::vec2 upperLeft = {0, 0};
-    glm::vec2 bottomRight = {0, 0};
+    
 
     BoundingBox(){}
-    BoundingBox(const glm::vec2 newLeft,const glm::vec2 newRight){
-        upperLeft = newLeft;
-        bottomRight = newRight;
+    constexpr BoundingBox(const glm::vec2 newLeft,const glm::vec2 newRight) : 
+        upperLeft(newLeft), 
+        bottomRight(newRight)
+    {
+
     }
 
-    constexpr bool InBounds(float xPos, float yPos){
+    constexpr bool InBounds(float xPos, float yPos) const {
         return InBounds({xPos, yPos});
     }
-    constexpr bool InBounds(const glm::vec2 position){
+    constexpr bool InBounds(const glm::vec2 position) const {
         if(position.x >= upperLeft.x && position.x <= bottomRight.x
             && position.y >= upperLeft.y && position.y <= bottomRight.y){
             return true;
@@ -27,18 +30,53 @@ public:
         return false;
     }
 
-    constexpr float Area(){
+    constexpr float Area() const {
         const float width = bottomRight.x - upperLeft.x;
         const float height = bottomRight.y - upperLeft.y;
         return width * height;
     }
 
-    constexpr glm::vec2 UpperLeft()
-    {
+    constexpr BoundingBox SplitTopLeft() const{
+        const glm::vec2 botRight = glm::vec2{
+            (upperLeft.x + bottomRight.x) / 2,
+            (upperLeft.y + bottomRight.y) / 2
+        };
+        return BoundingBox(upperLeft, botRight);
+    }
+    constexpr BoundingBox SplitBottomLeft() const{
+        const glm::vec2 botRight = glm::vec2{
+            (upperLeft.x + bottomRight.x) / 2,
+            bottomRight.y
+        };
+        const  glm::vec2 topLeft = glm::vec2{
+            upperLeft.x,
+            (upperLeft.y + bottomRight.y) / 2
+        };
+        return  BoundingBox(topLeft, botRight);
+    }
+    constexpr BoundingBox SplitTopRight() const{
+        const glm::vec2 botRight = glm::vec2{
+            bottomRight.x,
+            (upperLeft.y + bottomRight.y) / 2
+        };
+        const  glm::vec2 topLeft = glm::vec2{
+            (upperLeft.x + bottomRight.x) / 2,
+            upperLeft.y
+        };
+        return BoundingBox(topLeft, botRight);
+    }
+    constexpr BoundingBox SplitBottomRight() const{
+        const  glm::vec2 topLeft = glm::vec2{
+            (upperLeft.x + bottomRight.x) / 2,
+            (upperLeft.y + bottomRight.y) / 2
+        };
+        return BoundingBox(topLeft, bottomRight);
+    }
+
+    constexpr glm::vec2 UpperLeft() const {
         return upperLeft;
     }
-    constexpr glm::vec2 BottomRight()
-    {
+    constexpr glm::vec2 BottomRight() const {
         return bottomRight;
     }
 };
@@ -48,7 +86,7 @@ class QuadTree
 {
 public:
     QuadTree();
-    QuadTree(BoundingBox boundingBox);
+    QuadTree(const BoundingBox boundingBox);
 
     void PreWarm(const unsigned int amount, unsigned int& depth);
 
@@ -77,7 +115,7 @@ public:
         }
     }
 
-    constexpr BoundingBox& GetBounds(){
+    const BoundingBox& GetBounds(){
         return m_treeBoundingBox;
     }
 
@@ -86,7 +124,7 @@ private:
     
     std::vector<PhysicsComponent*> m_nodes;
     
-    BoundingBox m_treeBoundingBox;
+    const BoundingBox m_treeBoundingBox;
 
     constexpr void ClearNodes();
     constexpr void AddNode(PhysicsComponent* node);
